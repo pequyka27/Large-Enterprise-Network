@@ -1,0 +1,45 @@
+# TVI Infrastructure Device Inventory
+# Used by auto_provision.py for baseline configuration and backups
+
+devices:
+  - hostname: HCMC-CORE-SW01
+    ip: 192.168.1.10
+    device_type: cisco_ios
+    port: 22
+    role: core_switch
+    site: hcmc
+
+  - hostname: HCMC-DIST-SW01
+    ip: 192.168.1.2
+    device_type: cisco_ios
+    port: 22
+    role: dist_switch
+    site: hcmc
+
+  - hostname: HCMC-DIST-SW02
+    ip: 192.168.1.3
+    device_type: cisco_ios
+    port: 22
+    role: dist_switch
+    site: hcmc
+
+  - hostname: HANOI-RND-SW01
+    ip: 192.168.2.10
+    device_type: cisco_ios
+    port: 22
+    role: dist_switch
+    site: hanoi
+
+  - hostname: HANOI-RND-SW02
+    ip: 192.168.2.11
+    device_type: cisco_ios
+    port: 22
+    role: access_switch
+    site: hanoi
+
+  - hostname: DANANG-LOG-SW01
+    ip: 192.168.3.10
+    device_type: cisco_ios
+    port: 22
+    role: access_switch
+    site: danang

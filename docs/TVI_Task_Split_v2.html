@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>TVI - Phân chia công việc & Quy chuẩn kỹ thuật (v2 - Sprint 7 ngày)</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm 16mm 14mm; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #1a1a1a; }
+  h1 { font-size: 18pt; color: #0b3d91; margin: 0 0 4px 0; }
+  h2 { font-size: 13.5pt; color: #fff; background: #0b3d91; padding: 5px 9px; margin: 18px 0 8px 0; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; color: #0b3d91; border-bottom: 1.5px solid #0b3d91; padding-bottom: 2px; margin: 14px 0 6px 0; page-break-after: avoid; }
+  h4 { font-size: 10.5pt; margin: 10px 0 4px 0; page-break-after: avoid; }
+  table { border-collapse: collapse; width: 100%; margin: 6px 0 10px 0; font-size: 9.3pt; page-break-inside: auto; }
+  tr { page-break-inside: avoid; }
+  th, td { border: 1px solid #9aa8c0; padding: 3px 6px; vertical-align: top; text-align: left; }
+  th { background: #dfe7f5; }
+  code, pre { font-family: Consolas, "Courier New", monospace; font-size: 8.8pt; }
+  code { background: #f1f3f7; padding: 0 3px; border-radius: 2px; }
+  pre { background: #f6f8fb; border: 1px solid #cfd8e6; padding: 6px 8px; white-space: pre-wrap; page-break-inside: avoid; margin: 4px 0 8px 0; }
+  .meta td { border: none; padding: 1px 8px 1px 0; font-size: 10pt; }
+  .box { border-left: 4px solid #0b3d91; background: #eef3fb; padding: 6px 10px; margin: 8px 0; }
+  .warn { border-left: 4px solid #c0392b; background: #fdf0ee; padding: 6px 10px; margin: 8px 0; }
+  .ok { border-left: 4px solid #1e8449; background: #eef8f1; padding: 6px 10px; margin: 8px 0; }
+  .cut { color: #7b7b7b; text-decoration: line-through; }
+  .small { font-size: 9pt; color: #444; }
+  .pb { page-break-before: always; }
+  ul, ol { margin: 3px 0 6px 0; padding-left: 20px; }
+  li { margin: 1px 0; }
+</style>
+</head>
+<body>
+
+<h1>TVI ENTERPRISE NETWORK – PHÂN CHIA CÔNG VIỆC &amp; QUY CHUẨN KỸ THUẬT (v2)</h1>
+<table class="meta">
+<tr><td><b>Đồ án:</b></td><td>Large Enterprise Network Design &amp; Implementation – TechViet Innovations (TVI)</td></tr>
+<tr><td><b>Nhóm:</b></td><td>4 thành viên (P1 – P4)</td></tr>
+<tr><td><b>Thời hạn:</b></td><td>Sprint 7 ngày (đề gốc 6 tuần, thầy giao trễ nên gom lại còn 1 tuần)</td></tr>
+<tr><td><b>Nền tảng:</b></td><td>Windows + VMware Workstation Pro (miễn phí) + EVE-NG Community, image Cisco vIOS 15.x / vIOS-L2 15.2</td></tr>
+<tr><td><b>WAN overlay:</b></td><td>GRE over IPsec (HQ↔Hà Nội, HQ↔Đà Nẵng), OSPF chạy qua tunnel</td></tr>
+<tr><td><b>Automation:</b></td><td>Python 3 + Netmiko + PyYAML, chạy trên laptop (không cần node Docker/Linux trong lab)</td></tr>
+</table>
+
+<div class="box">
+<b>Nguyên tắc của bản v2:</b> chỉ làm <b>đủ và chắc</b> cho rubric 10 điểm (10 bước × 1.0 điểm) và rubric báo cáo. Mọi công nghệ “nâng cao” không có trong cột <i>Expected Outcome</i> của rubric thì <b>không cấu hình</b>, chỉ nhắc 1–2 đoạn trong báo cáo (phần định hướng tương lai). Cấu hình là “nguồn chuẩn”: mỗi thiết bị có 1 file text trên Git. Không cần máy chạy 24/7, lab dựng lại được trong vài phút bằng cách dán startup-config.
+</div>
+
+<h2>0. MAP RUBRIC 10 ĐIỂM → NGƯỜI PHỤ TRÁCH</h2>
+<table>
+<tr><th style="width:4%">Bước</th><th style="width:20%">Hạng mục (1.0đ mỗi bước)</th><th>Phải làm để lấy trọn điểm (tối thiểu)</th><th style="width:9%">Chính</th><th style="width:9%">Hỗ trợ</th></tr>
+<tr><td>1</td><td>Requirement Analysis &amp; Logical Topology</td><td>Sơ đồ Draw.io: HQ, 2 chi nhánh, ISP, ranh giới (demarcation) LAN/WAN/ISP, ghi interface, VLAN, subnet, vùng L2/L3</td><td>P1</td><td>P2</td></tr>
+<tr><td>2</td><td>IP Addressing &amp; Subnetting</td><td>File <code>TVI_IP_Addressing_Schema.md</code>: VLSM IPv4 theo số user + IPv6 /48 → /64 phân cấp, có tính mở rộng 10k+</td><td>P2</td><td>P1</td></tr>
+<tr><td>3</td><td>Layer 2 &amp; STP</td><td>VLAN, trunk 802.1Q, EtherChannel LACP, Rapid-PVST+, root bridge cố định ở <code>HCMC-CORE-SW01</code>, cổng thừa VLAN 999 + shutdown</td><td>P1</td><td>–</td></tr>
+<tr><td>4</td><td>FHRP &amp; IP Services</td><td>HSRP (110 preempt / 100) tại HQ; DHCP + DNS tập trung tại HQ, chi nhánh dùng <code>ip helper-address</code></td><td>P1</td><td>P2</td></tr>
+<tr><td>5</td><td>Underlay Routing (IGP)</td><td>OSPF hội tụ trong từng site, Loopback0 mọi router/L3 switch, passive-interface trên mạng user</td><td>P2</td><td>–</td></tr>
+<tr><td>6</td><td>Overlay Routing (BGP) &amp; WAN Edge</td><td>eBGP 3 edge ↔ ISP; 2 tunnel GRE/IPsec HQ↔HN, HQ↔ĐN; ping private 10.x xuyên site</td><td>P3 (tunnel) + P2 (BGP)</td><td>–</td></tr>
+<tr><td>7</td><td>Security &amp; Hardening</td><td>ACL cô lập Guest khỏi Corp/Mgmt; PAT ra Internet; DHCP Snooping + DAI (+ Port Security) trên switch access; SSH only</td><td>P4</td><td>P1</td></tr>
+<tr><td>8</td><td>QoS</td><td>Marking EF (voice) / AF31 (video), LLQ priority cho voice trên WAN, chứng minh bằng counter <code>show policy-map interface</code></td><td>P3</td><td>–</td></tr>
+<tr><td>9</td><td>Network Automation</td><td><code>auto_provision.py</code>: inventory YAML, getpass, backup timestamp, đẩy VLAN/NTP/banner, try/except, log, bỏ qua VLAN đã có (idempotent)</td><td>P4</td><td>–</td></tr>
+<tr><td>10</td><td>Testing &amp; Documentation</td><td>Ping/traceroute end-to-end, test failover &lt; 3 phút, báo cáo PDF có TOC + số trang, README</td><td>Cả nhóm (P4 tổng hợp)</td><td>–</td></tr>
+</table>
+
+<h3>0.1. Những thứ CẮT BỎ (không cấu hình, chỉ nêu trong báo cáo)</h3>
+<table>
+<tr><th style="width:35%">Hạng mục</th><th>Lý do / cách xử lý trong báo cáo</th></tr>
+<tr><td>EVPN-VXLAN, Spine-Leaf Data Center</td><td>vIOS không hỗ trợ; rubric bước 6 cho phép “iBGP/EVPN <b>hoặc</b> IPsec tunnels”. Viết 1 đoạn “future work”.</td></tr>
+<tr><td>SD-WAN, dual-ISP, MPLS</td><td>Không có trong 10 bước. Nêu là định hướng mở rộng.</td></tr>
+<tr><td>ZTNA / SASE, NGFW, Zone-Based Firewall</td><td>Rubric bước 7 chỉ yêu cầu ACL + NAT + L2 security. Báo cáo viết 1 đoạn về hướng tiếp cận ZTNA (rubric báo cáo mục 5 có nhắc).</td></tr>
+<tr><td>WLC / CAPWAP, Wi-Fi</td><td>Không có image, không có trong 10 bước.</td></tr>
+<tr><td>MSTP, iBGP, OSPFv3 liên site, MP-BGP</td><td>Rapid-PVST+ và OSPFv2 đã đủ. IPv6 chỉ làm dual-stack + OSPFv3 trong HQ (xem P2).</td></tr>
+<tr><td>Ansible, NAPALM, node Docker/Ubuntu trong EVE</td><td>Chỉ cần 1 trong 2 (Python hoặc Ansible). Python chạy thẳng trên laptop qua mạng quản trị.</td></tr>
+<tr><td>SNMPv3, Syslog server, AAA/TACACS+, NTP authentication</td><td>Ngoài phạm vi chấm. Chỉ tắt Telnet/HTTP, dùng SSHv2.</td></tr>
+<tr><td>HSRP tại chi nhánh, 2 edge router tại HQ</td><td>Chi nhánh chỉ có 1 router theo hướng dẫn lab của đề. Ghi rõ là “giới hạn tài nguyên lab” trong báo cáo, đề xuất thiết kế thật có 2 router.</td></tr>
+</table>
+
+<h2>1. BỘ QUY CHUẨN BẮT BUỘC (INTEGRATION BASELINE)</h2>
+<div class="warn"><b>Không ai được tự đổi</b> hostname, tên VLAN, interface, IP trong mục này. Muốn đổi thì báo nhóm và sửa file này trước.</div>
+
+<h3>1.1. Thiết bị &amp; hostname (theo Phase 5 trong đề)</h3>
+<table>
+<tr><th>Site</th><th>Hostname</th><th>Image (EVE)</th><th>RAM</th><th>Vai trò</th></tr>
+<tr><td rowspan="4">HQ – HCMC</td><td>HCMC-EDGE-RTR01</td><td>vIOS</td><td>512 MB</td><td>Router biên: eBGP, IPsec, NAT, DHCP/DNS/NTP server, QoS</td></tr>
+<tr><td>HCMC-CORE-SW01</td><td>vIOS-L2</td><td>768 MB</td><td>Switch lõi L2, STP root</td></tr>
+<tr><td>HCMC-DIST-SW01</td><td>vIOS-L2</td><td>768 MB</td><td>L3 switch: SVI, HSRP active (110), OSPF; access cho PC</td></tr>
+<tr><td>HCMC-DIST-SW02</td><td>vIOS-L2</td><td>768 MB</td><td>L3 switch: SVI, HSRP standby (100), OSPF; access cho PC</td></tr>
+<tr><td rowspan="3">Hà Nội</td><td>HANOI-RND-RTR01</td><td>vIOS</td><td>512 MB</td><td>Router biên + router-on-a-stick, DHCP relay, ABR OSPF</td></tr>
+<tr><td>HANOI-RND-SW01</td><td>vIOS-L2</td><td>768 MB</td><td>Switch phân phối, STP root của site</td></tr>
+<tr><td>HANOI-RND-SW02</td><td>vIOS-L2</td><td>768 MB</td><td>Switch access (Port Security, DHCP Snooping, DAI)</td></tr>
+<tr><td rowspan="2">Đà Nẵng</td><td>DANANG-LOG-RTR01</td><td>vIOS</td><td>512 MB</td><td>Router biên + router-on-a-stick, DHCP relay, ABR OSPF</td></tr>
+<tr><td>DANANG-LOG-SW01</td><td>vIOS-L2</td><td>768 MB</td><td>Switch access, STP root của site</td></tr>
+<tr><td>ISP</td><td>ISP-CLOUD-RTR01</td><td>vIOS</td><td>512 MB</td><td>BGP AS 65100, Loopback 8.8.8.8 giả lập Internet</td></tr>
+<tr><td>Client</td><td>PC-xx (VPCS)</td><td>VPCS</td><td>~0</td><td>Máy trạm test DHCP/ping/QoS</td></tr>
+<tr><td>Quản trị</td><td>MGMT (Cloud1 / pnet1)</td><td>EVE Network</td><td>–</td><td>Nối laptop (chạy Python) vào VLAN 99 HQ</td></tr>
+</table>
+<p class="small">Tổng ≈ 4×512 MB + 6×768 MB ≈ 6.6 GB cho node. VM EVE cấp 10–12 GB RAM, 6–8 vCPU là chạy được trên laptop 16 GB. Bật node theo đợt 3–4 máy.</p>
+
+<h3>1.2. Sơ đồ đấu nối (cabling) – P1 dựng đúng bảng này trong EVE</h3>
+<table>
+<tr><th>Thiết bị A</th><th>Cổng A</th><th>Thiết bị B</th><th>Cổng B</th><th>Loại liên kết</th></tr>
+<tr><td>HCMC-EDGE-RTR01</td><td>Gi0/0</td><td>ISP-CLOUD-RTR01</td><td>Gi0/0</td><td>WAN 203.0.113.0/30</td></tr>
+<tr><td>HCMC-EDGE-RTR01</td><td>Gi0/1</td><td>HCMC-CORE-SW01</td><td>Gi0/0</td><td>Access VLAN 100 (transit HQ)</td></tr>
+<tr><td>HCMC-CORE-SW01</td><td>Gi0/1, Gi0/2</td><td>HCMC-DIST-SW01</td><td>Gi0/1, Gi0/2</td><td>Port-channel 1, LACP, trunk</td></tr>
+<tr><td>HCMC-CORE-SW01</td><td>Gi0/3, Gi1/0</td><td>HCMC-DIST-SW02</td><td>Gi0/1, Gi0/2</td><td>Port-channel 2, LACP, trunk</td></tr>
+<tr><td>HCMC-DIST-SW01</td><td>Gi0/3</td><td>HCMC-DIST-SW02</td><td>Gi0/3</td><td>Trunk (dự phòng, STP block)</td></tr>
+<tr><td>HCMC-CORE-SW01</td><td>Gi1/1</td><td>MGMT Cloud1 (pnet1)</td><td>–</td><td>Access VLAN 99</td></tr>
+<tr><td>HCMC-DIST-SW01</td><td>Gi1/0 / Gi1/1</td><td>PC-HQ-EXEC / PC-HQ-GUEST</td><td>eth0</td><td>Access VLAN 10 / 40</td></tr>
+<tr><td>HCMC-DIST-SW02</td><td>Gi1/0 / Gi1/1</td><td>PC-HQ-RND / PC-HQ-LOG</td><td>eth0</td><td>Access VLAN 20 / 30</td></tr>
+<tr><td>HANOI-RND-RTR01</td><td>Gi0/0</td><td>ISP-CLOUD-RTR01</td><td>Gi0/1</td><td>WAN 198.51.100.0/30</td></tr>
+<tr><td>HANOI-RND-RTR01</td><td>Gi0/1</td><td>HANOI-RND-SW01</td><td>Gi0/0</td><td>Trunk (subinterface)</td></tr>
+<tr><td>HANOI-RND-SW01</td><td>Gi0/1, Gi0/2</td><td>HANOI-RND-SW02</td><td>Gi0/1, Gi0/2</td><td>Port-channel 1, LACP, trunk</td></tr>
+<tr><td>HANOI-RND-SW01</td><td>Gi1/0</td><td>PC-HN-EXEC</td><td>eth0</td><td>Access VLAN 10</td></tr>
+<tr><td>HANOI-RND-SW02</td><td>Gi1/0 / Gi1/1</td><td>PC-HN-RND / PC-HN-GUEST</td><td>eth0</td><td>Access VLAN 20 / 40</td></tr>
+<tr><td>DANANG-LOG-RTR01</td><td>Gi0/0</td><td>ISP-CLOUD-RTR01</td><td>Gi0/2</td><td>WAN 192.0.2.0/30</td></tr>
+<tr><td>DANANG-LOG-RTR01</td><td>Gi0/1</td><td>DANANG-LOG-SW01</td><td>Gi0/0</td><td>Trunk (subinterface)</td></tr>
+<tr><td>DANANG-LOG-SW01</td><td>Gi1/0 / Gi1/1</td><td>PC-DN-LOG / PC-DN-GUEST</td><td>eth0</td><td>Access VLAN 30 / 40</td></tr>
+</table>
+
+<h3>1.3. VLAN chuẩn (tên phân biệt hoa thường)</h3>
+<table>
+<tr><th>ID</th><th>Tên</th><th>Có ở site</th><th>Đối tượng / chính sách</th></tr>
+<tr><td>10</td><td>EXEC_FINANCE</td><td>HQ, HN, ĐN</td><td>Ban giám đốc, tài chính – Corp, ưu tiên bảo mật</td></tr>
+<tr><td>20</td><td>RND_ENGINEERING</td><td>HQ, HN, ĐN</td><td>Kỹ sư R&amp;D – Corp</td></tr>
+<tr><td>30</td><td>LOGISTICS_OPS</td><td>HQ, HN, ĐN</td><td>Kho vận, máy quét, IoT – Corp</td></tr>
+<tr><td>40</td><td>GUEST</td><td>HQ, HN, ĐN</td><td>Khách – <b>chỉ đi Internet</b> (ACL P4)</td></tr>
+<tr><td>99</td><td>MANAGEMENT</td><td>HQ, HN, ĐN</td><td>SSH, automation, NTP</td></tr>
+<tr><td>100</td><td>HQ_TRANSIT</td><td>Chỉ HQ</td><td>Đoạn nối EDGE ↔ DIST1/DIST2 chạy OSPF</td></tr>
+<tr><td>999</td><td>BLACKHOLE</td><td>Mọi switch</td><td>Mọi cổng không dùng: gán VLAN 999 + shutdown</td></tr>
+</table>
+
+<h3>1.4. Khung IP (P2 chi tiết hóa trong file schema, <b>không đổi các giá trị dưới đây</b>)</h3>
+<h4>a) IPv4 VLSM theo quy mô (4.000+ user hiện tại, còn dư lớn cho 10.000+)</h4>
+<table>
+<tr><th>Site / khối</th><th>VLAN</th><th>Số host dự kiến</th><th>Subnet</th><th>Gateway (.1 = HSRP VIP ở HQ)</th></tr>
+<tr><td rowspan="5">HQ 10.10.0.0/16<br>(2.000+ user)</td><td>20 RND_ENGINEERING</td><td>800</td><td>10.10.0.0/22</td><td>10.10.0.1 (DIST1 .2, DIST2 .3)</td></tr>
+<tr><td>10 EXEC_FINANCE</td><td>400</td><td>10.10.4.0/23</td><td>10.10.4.1 (.2 / .3)</td></tr>
+<tr><td>40 GUEST</td><td>400</td><td>10.10.6.0/23</td><td>10.10.6.1 (.2 / .3)</td></tr>
+<tr><td>30 LOGISTICS_OPS</td><td>200</td><td>10.10.8.0/24</td><td>10.10.8.1 (.2 / .3)</td></tr>
+<tr><td>100 HQ_TRANSIT</td><td>3</td><td>10.10.255.0/29</td><td>EDGE .1, DIST1 .2, DIST2 .3</td></tr>
+<tr><td rowspan="4">Hà Nội 10.20.0.0/16<br>(1.500+ user)</td><td>20 RND_ENGINEERING</td><td>1.000</td><td>10.20.0.0/22</td><td>10.20.0.1</td></tr>
+<tr><td>40 GUEST</td><td>300</td><td>10.20.4.0/23</td><td>10.20.4.1</td></tr>
+<tr><td>10 EXEC_FINANCE</td><td>100</td><td>10.20.6.0/24</td><td>10.20.6.1</td></tr>
+<tr><td>30 LOGISTICS_OPS</td><td>50</td><td>10.20.7.0/26</td><td>10.20.7.1</td></tr>
+<tr><td rowspan="5">Đà Nẵng 10.30.0.0/16<br>(500+ user + IoT)</td><td>30 LOGISTICS_OPS (+IoT)</td><td>1.000</td><td>10.30.0.0/22</td><td>10.30.0.1</td></tr>
+<tr><td>40 GUEST</td><td>200</td><td>10.30.4.0/24</td><td>10.30.4.1</td></tr>
+<tr><td>10 EXEC_FINANCE</td><td>50</td><td>10.30.5.0/26</td><td>10.30.5.1</td></tr>
+<tr><td>20 RND_ENGINEERING</td><td>20</td><td>10.30.5.64/27</td><td>10.30.5.65</td></tr>
+<tr><td>Dự trữ IoT 10.000+</td><td>–</td><td>10.30.64.0/18 (16.382 host, chưa cấu hình)</td><td>–</td></tr>
+<tr><td>Loopback0</td><td colspan="4">EDGE 10.10.254.1 · DIST1 10.10.254.2 · DIST2 10.10.254.3 · HN-RTR 10.20.254.1 · ĐN-RTR 10.30.254.1 (đều /32, nằm trong /16 của site để summary được)</td></tr>
+<tr><td>Tunnel overlay</td><td colspan="4">Tunnel10 HQ↔HN: 10.255.255.0/30 (HQ .1, HN .2) · Tunnel20 HQ↔ĐN: 10.255.255.4/30 (HQ .5, ĐN .6)</td></tr>
+<tr><td>WAN public (/30)</td><td colspan="4">ISP luôn là .1, khách hàng là .2: HQ 203.0.113.0/30 · HN 198.51.100.0/30 · ĐN 192.0.2.0/30 · ISP Lo0 8.8.8.8/32 (giả lập Internet)</td></tr>
+</table>
+
+<h4>b) Mạng quản trị VLAN 99 (giữ đúng code mẫu của đề)</h4>
+<table>
+<tr><th>Site</th><th>Subnet</th><th>Gateway</th><th>Switch</th></tr>
+<tr><td>HQ</td><td>192.168.1.0/24</td><td>192.168.1.1 (HSRP; DIST1 .2, DIST2 .3)</td><td>CORE .10 · laptop quản trị .100</td></tr>
+<tr><td>Hà Nội</td><td>192.168.2.0/24</td><td>192.168.2.1 (Gi0/1.99)</td><td>SW01 .10 · SW02 .11</td></tr>
+<tr><td>Đà Nẵng</td><td>192.168.3.0/24</td><td>192.168.3.1 (Gi0/1.99)</td><td>SW01 .10</td></tr>
+</table>
+
+<h4>c) IPv6 dual-stack: 2001:db8:7a1::/48 (P2 hoàn thiện)</h4>
+<p>Phân cấp: <code>2001:db8:7a1:SVV::/64</code> với <b>S</b> = site (1 HQ, 2 HN, 3 ĐN), <b>VV</b> = số VLAN viết như số thập phân (10, 20, 30, 40, 99; transit dùng ff). Ví dụ HQ VLAN 10 = <code>2001:db8:7a1:110::/64</code>, HN VLAN 20 = <code>2001:db8:7a1:220::/64</code>, ĐN VLAN 30 = <code>2001:db8:7a1:330::/64</code>, transit HQ = <code>2001:db8:7a1:1ff::/64</code>. Gateway <code>::1</code> (HQ dùng HSRPv2 IPv6 hoặc gán DIST1 <code>::2</code>, DIST2 <code>::3</code> + RA). Mỗi site là 1 khối /52 → summary gọn.</p>
+<p class="small">Ghi chú: file cũ dùng <code>2001:db8:tvi::/48</code> là không hợp lệ (“tvi” không phải hex) nên đổi thành <code>7a1</code>.</p>
+
+<h3>1.5. Baseline bắt buộc trên MỌI router/switch (ai dựng thiết bị thì dán đoạn này trước)</h3>
+<pre>hostname &lt;HOSTNAME&gt;
+no ip domain-lookup
+ip domain name tvi.lab
+username admin privilege 15 secret Cisco123!
+enable secret Cisco123!
+crypto key generate rsa modulus 2048
+ip ssh version 2
+no ip http server
+no ip http secure-server
+line con 0
+ logging synchronous
+ exec-timeout 0 0
+line vty 0 4
+ transport input ssh
+ login local
+service password-encryption</pre>
+<p class="small">Thông số IPsec (P3): ISAKMP AES-256 / SHA-256 / DH group 14 / pre-shared key <code>TVI_Secret_Key2026!</code>; transform-set ESP-AES-256 + ESP-SHA256-HMAC, mode transport. AS BGP: ISP 65100, HQ 65001, HN 65002, ĐN 65003.</p>
+
+<h3>1.6. Quy ước Git &amp; file cấu hình</h3>
+<ul>
+<li>Repo private, cấu trúc đúng gói nộp (mục 5.1). Mỗi thiết bị <b>1 file duy nhất</b> <code>Configurations/&lt;Site&gt;_Startup_Configs/&lt;HOSTNAME&gt;.cfg</code>.</li>
+<li>File chia theo khối có comment tiêu đề: <code>! ===== [P1] L2 =====</code>, <code>! ===== [P2] ROUTING =====</code>, <code>! ===== [P3] WAN/QoS =====</code>, <code>! ===== [P4] SECURITY =====</code>. Mỗi người chỉ sửa khối của mình → không đè nhau.</li>
+<li>Muốn dựng lại lab: dán file .cfg vào <i>Startup-config</i> của node trong EVE (hoặc paste vào console) → wipe → start.</li>
+</ul>
+
+<h2 class="pb">2. CHI TIẾT 4 PHẦN VIỆC</h2>
+
+<h3>PHẦN 1 – TOPOLOGY, LAYER 2, HSRP, DHCP/DNS (Bước 1, 3, 4)</h3>
+<p><b>Mục tiêu:</b> dựng khung lab cho cả nhóm vào <b>ngày 1</b>, sau đó hoàn thiện L2 + dự phòng gateway + dịch vụ IP.</p>
+<ol>
+<li><b>Dựng lab EVE</b> đúng mục 1.1–1.2 (tên node, cổng). Export file <code>TVI_Lab.unl</code> gửi nhóm ngay tối ngày 1. Cài Cloud1/pnet1 cho mạng quản trị (hướng dẫn mục 3.2).</li>
+<li><b>Sơ đồ Draw.io</b> <code>TVI_Logical_Topology.drawio/.png</code>: icon Cisco chuẩn, ghi interface, VLAN, subnet, AS BGP, tunnel, ranh giới LAN / WAN / ISP (demarcation) và vùng L2/L3. Thêm 1 sơ đồ vật lý đơn giản (cabling) → điểm tối đa rubric báo cáo mục 2.</li>
+<li><b>VLAN &amp; trunk:</b> tạo VLAN theo 1.3 trên mọi switch; trunk 802.1Q giữa switch và lên router (<code>switchport trunk encapsulation dot1q</code>, <code>switchport mode trunk</code>, <code>switchport nonegotiate</code>). Cổng thừa: <code>switchport access vlan 999</code> + <code>shutdown</code>.</li>
+<li><b>EtherChannel LACP:</b> Po1 CORE↔DIST1, Po2 CORE↔DIST2, Po1 HN-SW01↔HN-SW02 (<code>channel-group X mode active</code>).</li>
+<li><b>Rapid-PVST+:</b> <code>spanning-tree mode rapid-pvst</code> mọi switch. HQ: CORE <code>spanning-tree vlan 1-4094 root primary</code>, DIST1 <code>root secondary</code>. HN: SW01 root primary. ĐN: SW01 root primary. Cổng nối PC: <code>spanning-tree portfast</code> + <code>bpduguard enable</code>.</li>
+<li><b>SVI + HSRP (HQ):</b> trên DIST1/DIST2 bật <code>ip routing</code>, SVI VLAN 10/20/30/40/99 theo bảng 1.4. HSRP version 2, group = VLAN ID, VIP = .1, DIST1 priority 110 + preempt, DIST2 priority 100 + preempt. SVI 100 không chạy HSRP (chỉ OSPF).</li>
+<li><b>DHCP tập trung tại HQ</b> trên <code>HCMC-EDGE-RTR01</code> (server = Loopback0 10.10.254.1): 1 pool cho mỗi VLAN user của cả 3 site (10/20/30/40 × 3 = 12 pool), <code>ip dhcp excluded-address</code> .1–.10 mỗi subnet, <code>default-router</code>, <code>dns-server 10.10.254.1</code>, <code>domain-name tvi.lab</code>.</li>
+<li><b>DNS:</b> trên EDGE <code>ip dns server</code> + vài bản ghi <code>ip host</code> (ví dụ <code>edge.tvi.lab</code>, <code>internet.tvi.lab 8.8.8.8</code>) để demo phân giải tên.</li>
+<li><b>DHCP relay:</b> SVI DIST1/DIST2 tại HQ và subinterface router HN/ĐN đặt <code>ip helper-address 10.10.254.1</code> (subinterface router chi nhánh do P2 tạo, P1 chỉ thêm helper).</li>
+</ol>
+<p><b>Bàn giao:</b> <code>TVI_Lab.unl</code>, sơ đồ Draw.io + PNG, khối <code>[P1]</code> trong file .cfg của 6 switch + DHCP/DNS trên EDGE.</p>
+<p><b>Bằng chứng:</b> <code>show vlan brief</code>, <code>show interfaces trunk</code>, <code>show etherchannel summary</code>, <code>show spanning-tree vlan 10</code> (CORE “This bridge is the root”), <code>show standby brief</code>, <code>show ip dhcp binding</code>, VPCS <code>ip dhcp</code> nhận IP đúng ở cả 3 site.</p>
+
+<h3>PHẦN 2 – IP SCHEMA, OSPF, eBGP (Bước 2, 5, phần BGP của bước 6)</h3>
+<ol>
+<li><b>IP schema</b> <code>TVI_IP_Addressing_Schema.md</code>: bảng 1.4 đầy đủ (network, mask, prefix, range, broadcast, gateway, số host khả dụng, IPv6 /64), bảng IP từng interface của từng thiết bị, giải thích cách chừa chỗ mở rộng 10k+ user và khối IoT /18. <b>Nộp ngày 1</b> để mọi người dùng chung.</li>
+<li><b>Subinterface chi nhánh:</b> HN/ĐN <code>Gi0/1.10/.20/.30/.40/.99</code> (<code>encapsulation dot1Q</code>), IP gateway theo bảng.</li>
+<li><b>OSPFv2 process 1, router-id = Loopback0:</b>
+  <ul>
+  <li>HQ <b>Area 0</b>: EDGE, DIST1, DIST2 trên VLAN 100 + Loopback; mạng user là <code>passive-interface</code>.</li>
+  <li>HN <b>Area 1</b>, ĐN <b>Area 2</b>: mạng LAN + Loopback của router chi nhánh. Tunnel10/20 thuộc Area 0 (P3 tạo tunnel, P2 thêm vào OSPF) → router chi nhánh là ABR.</li>
+  <li><b>Summarization</b> trên ABR chi nhánh: <code>area 1 range 10.20.0.0 255.255.0.0</code>, <code>area 2 range 10.30.0.0 255.255.0.0</code>. Kiểm tra HQ thấy <code>O IA 10.20.0.0/16</code>.</li>
+  <li>EDGE: <code>default-information originate</code> để DIST nhận route mặc định.</li>
+  </ul></li>
+<li><b>ISP-CLOUD-RTR01:</b> AS 65100, Lo0 8.8.8.8/32 quảng bá vào BGP, <code>neighbor x.x.x.2 default-originate</code> cho cả 3 khách hàng.</li>
+<li><b>eBGP</b> HQ 65001 / HN 65002 / ĐN 65003 với ISP: <code>network</code> đúng /30 WAN của mình. Mỗi site nhận default route từ ISP → <b>chi nhánh đi Internet trực tiếp</b> (không vòng về HQ, khớp yêu cầu “direct cloud access” của đề – nhớ ghi trong báo cáo). <b>Không</b> đưa 10.x vào BGP và <b>không</b> đưa IP public vào OSPF (tránh lỗi recursive routing tunnel).</li>
+<li><b>IPv6 (mức tối thiểu đủ điểm):</b> <code>ipv6 unicast-routing</code>, gán IPv6 cho SVI/subinterface user, VLAN 100, Loopback; <b>OSPFv3 Area 0 trong HQ</b> (EDGE, DIST1, DIST2). VPCS lấy IPv6 bằng <code>ip auto</code> (SLAAC) và ping6 gateway. IPv6 liên site: không bắt buộc, ghi là bước tiếp theo.</li>
+</ol>
+<p><b>Bàn giao:</b> schema .md, khối <code>[P2]</code> trên 4 router + DIST1/DIST2 + ISP.</p>
+<p><b>Bằng chứng:</b> <code>show ip ospf neighbor</code>, <code>show ip route ospf</code> (có O IA summary), <code>ping</code> Loopback trong site, <code>show ip bgp summary</code> (3 neighbor Established trên ISP), <code>show ip route bgp</code>, <code>show ipv6 ospf neighbor</code>, <code>show ipv6 interface brief</code>.</p>
+
+<h3>PHẦN 3 – GRE over IPsec &amp; QoS (Bước 6 phần tunnel, Bước 8)</h3>
+<ol>
+<li><b>IPsec</b> trên 3 router biên: <code>crypto isakmp policy 10</code> (encr aes 256, hash sha256, authentication pre-share, group 14), <code>crypto isakmp key TVI_Secret_Key2026! address &lt;IP public đối diện&gt;</code>, <code>crypto ipsec transform-set TVI-TS esp-aes 256 esp-sha256-hmac</code> + <code>mode transport</code>, <code>crypto ipsec profile TVI-PROF</code>.</li>
+<li><b>Tunnel10</b> HQ↔HN, <b>Tunnel20</b> HQ↔ĐN: <code>tunnel source Gi0/0</code>, <code>tunnel destination &lt;IP public&gt;</code>, <code>tunnel protection ipsec profile TVI-PROF</code>, <code>ip mtu 1400</code>, <code>ip tcp adjust-mss 1360</code>, <code>ip ospf network point-to-point</code>. Báo P2 đưa tunnel vào OSPF Area 0.</li>
+<li><b>Kiểm tra:</b> PC Hà Nội/Đà Nẵng ping và traceroute tới PC HQ (10.x ↔ 10.x) đi qua 10.255.255.x; ISP <b>không</b> có route 10.x (chứng minh bằng <code>show ip route</code> trên ISP).</li>
+<li><b>QoS DiffServ (MQC)</b> trên 3 router biên:
+  <ul>
+  <li><b>Phân loại + đánh dấu</b> (input trên cổng LAN: EDGE Gi0/1, chi nhánh các subinterface): ACL <code>VOICE</code> = UDP 16384–32767 → <code>set dscp ef</code>; ACL <code>VIDEO</code> = UDP 5004–5005 → <code>set dscp af31</code>.</li>
+  <li><b>Hàng đợi</b> (output trên Gi0/0 WAN): class EF → <code>priority percent 20</code>; class AF31 → <code>bandwidth percent 30</code>; class-default → <code>fair-queue</code>. (GRE tự copy DSCP ra header ngoài nên match DSCP trên cổng vật lý vẫn đúng; có thể thêm <code>qos pre-classify</code> trên tunnel.)</li>
+  <li><b>Test:</b> từ VPCS <code>ping &lt;IP PC HQ&gt; -2 -p 16500 -c 50</code> (UDP voice) và <code>-p 5004</code> (video) → counter tăng ở <code>show policy-map interface</code>.</li>
+  </ul></li>
+</ol>
+<p><b>Bàn giao:</b> khối <code>[P3]</code> trên 3 router biên.</p>
+<p><b>Bằng chứng:</b> <code>show crypto isakmp sa</code> (QM_IDLE), <code>show crypto ipsec sa</code> (encaps/decaps tăng), <code>show interface tunnel10</code> up/up, ping + traceroute xuyên tunnel, <code>show policy-map interface Gi0/0</code> và <code>show policy-map interface Gi0/1</code>.</p>
+
+<h3>PHẦN 4 – NAT, ACL, L2 SECURITY, AUTOMATION + TỔNG HỢP BÁO CÁO (Bước 7, 9, 10)</h3>
+<ol>
+<li><b>PAT</b> trên 3 router biên: <code>ip nat inside</code> (cổng/subinterface LAN), <code>ip nat outside</code> (Gi0/0). ACL <code>NAT_INSIDE</code>: <code>deny ip 10.0.0.0 0.255.255.255 10.0.0.0 0.255.255.255</code> rồi <code>permit ip 10.0.0.0 0.255.255.255 any</code>; <code>ip nat inside source list NAT_INSIDE interface Gi0/0 overload</code>. Test: VPCS ping 8.8.8.8, <code>show ip nat translations</code>.</li>
+<li><b>ACL cô lập Guest</b> (<code>ip access-list extended GUEST_IN</code>, áp <code>in</code> trên SVI 40 của DIST1 + DIST2 và subinterface .40 ở HN/ĐN):
+<pre>permit udp any any eq bootps          ! DHCP
+permit udp any host 10.10.254.1 eq domain   ! DNS HQ
+deny   ip any 10.0.0.0 0.255.255.255  ! cấm toàn bộ Corp
+deny   ip any 192.168.0.0 0.0.255.255 ! cấm Management
+permit ip any any                     ! chỉ còn Internet</pre>
+Test: PC-GUEST ping 8.8.8.8 thành công, ping PC-EXEC / 192.168.1.10 thất bại; PC-EXEC ping PC-RND thành công.</li>
+<li><b>L2 security</b> trên switch có PC (HN-SW02, ĐN-SW01, thêm DIST1/DIST2 cổng PC nếu kịp):
+  <ul>
+  <li>Port Security: <code>switchport port-security maximum 2</code>, <code>violation restrict</code>, <code>mac-address sticky</code>.</li>
+  <li>DHCP Snooping: <code>ip dhcp snooping</code>, <code>ip dhcp snooping vlan 10,20,30,40</code>, uplink <code>ip dhcp snooping trust</code>, <code>no ip dhcp snooping information option</code> (nếu thiếu, relay sẽ drop gói vì option 82).</li>
+  <li>DAI: <code>ip arp inspection vlan 10,20,30,40</code>, uplink <code>ip arp inspection trust</code>.</li>
+  </ul>
+  <span class="small">Thứ tự: bật snooping → cho PC xin lại DHCP → mới bật DAI (DAI dựa vào bảng binding).</span></li>
+<li><b>Automation</b> <code>Automation/</code> (dựa trên starter code của đề, chạy trên laptop qua VLAN 99):
+  <ul>
+  <li><code>inventory.yaml</code>: 6 switch (CORE 192.168.1.10, DIST1 .2, DIST2 .3, HN-SW01 192.168.2.10, HN-SW02 .11, ĐN-SW01 192.168.3.10), device_type, port 22.</li>
+  <li>Credential bằng biến môi trường <code>TVI_USER/TVI_PASS</code>, nếu không có thì <code>getpass()</code>. Không có mật khẩu trong code.</li>
+  <li>Trước khi đổi: lưu <code>show running-config</code> + <code>show ip interface brief</code> vào <code>backups/&lt;hostname&gt;_&lt;YYYYmmdd_HHMMSS&gt;_backup.cfg</code>; sau khi đổi lưu bản <code>_after</code>.</li>
+  <li>Đẩy baseline: <code>ntp server 10.10.254.1</code> (EDGE chạy <code>ntp master 3</code>), banner, <code>logging buffered</code>, VLAN 10/20/30/99 + tên.</li>
+  <li><b>Idempotent:</b> đọc <code>show vlan brief</code>, VLAN nào đã đúng tên thì bỏ qua, chỉ gửi lệnh còn thiếu; chạy lần 2 phải báo “no changes”.</li>
+  <li><code>try/except</code> NetmikoTimeoutException, NetmikoAuthenticationException, Exception → ghi <code>logs/automation.log</code> và chạy tiếp thiết bị kế (demo: tắt 1 switch, script không crash).</li>
+  <li>Hàm tách riêng (load_inventory, backup, provision_vlans, push_baseline), có comment, <code>requirements.txt</code>, <code>README.md</code> hướng dẫn chạy.</li>
+  </ul></li>
+<li><b>Tổng hợp báo cáo + gói nộp</b> (mục 5).</li>
+</ol>
+<p><b>Bằng chứng:</b> <code>show ip nat translations</code>, ping Guest được/bị chặn, <code>show access-lists</code> (hit count), <code>show port-security</code>, <code>show ip dhcp snooping binding</code>, <code>show ip arp inspection</code>, ảnh chạy script 2 lần + 1 lần có thiết bị chết, ảnh thư mục backups + log.</p>
+
+<h2 class="pb">3. MÔI TRƯỜNG LAB (KHÔNG CÓ SERVER 24/7)</h2>
+<h3>3.1. Cài đặt (mỗi người, xong trong ngày 1)</h3>
+<ol>
+<li>BIOS bật VT-x/AMD-V. Windows: <b>tắt Hyper-V, WSL2, Docker Desktop, Memory Integrity</b> (Core Isolation) nếu VMware báo “Virtualized Intel VT-x/EPT is not supported”.</li>
+<li>VMware Workstation Pro (miễn phí) → import OVA/ISO EVE-NG Community; VM: 6–8 vCPU, 10–12 GB RAM, tick <i>Virtualize Intel VT-x/EPT or AMD-V/RVI</i>.</li>
+<li>Upload image vIOS (<code>vios-152M3</code>) và vIOS-L2 (<code>viosl2-1524</code>) theo Phase 3 của đề, chạy <code>/opt/unetlab/wrapper/unl_wrapper -a fixpermissions</code>.</li>
+<li>Import <code>TVI_Lab.unl</code> của P1. Máy yếu (8 GB) chỉ bật 4 router + ISP để làm P2/P3.</li>
+</ol>
+<h3>3.2. Nối laptop vào mạng quản trị (cho P4 và máy demo)</h3>
+<ol>
+<li>VMware → Virtual Network Editor: VMnet1 (host-only) đặt subnet <code>192.168.1.0/24</code>, tắt DHCP. Thêm Network Adapter 2 = VMnet1 cho VM EVE.</li>
+<li>Windows: card VMnet1 đặt IP tĩnh <code>192.168.1.100/24</code>. Thêm route: <code>route add 192.168.0.0 mask 255.255.252.0 192.168.1.1</code> (đi tới VLAN 99 của HN/ĐN qua HSRP HQ).</li>
+<li>EVE: thêm Network kiểu <b>Cloud1</b> (pnet1), nối vào CORE Gi1/1 (access VLAN 99). Test <code>ssh admin@192.168.1.10</code> từ laptop.</li>
+</ol>
+<h3>3.3. Quy trình làm việc</h3>
+<ul>
+<li>Mỗi người làm trên lab riêng, commit file .cfg mỗi tối. Không ai giữ “trạng thái VM”, chỉ giữ file text.</li>
+<li><b>3 buổi tích hợp</b> trên laptop mạnh nhất (cũng là máy demo): tối ngày 3, tối ngày 5, ngày 6.</li>
+<li>Quay sẵn video demo dự phòng ở ngày 6.</li>
+</ul>
+
+<h2>4. KẾ HOẠCH 7 NGÀY</h2>
+<table>
+<tr><th style="width:9%">Ngày</th><th>P1</th><th>P2</th><th>P3</th><th>P4</th><th style="width:16%">Mốc kiểm tra</th></tr>
+<tr><td>1</td><td>Dựng lab .unl, gửi nhóm; nháp Draw.io</td><td>IP schema v1 (chốt), bảng IP interface</td><td>Cài EVE, test vIOS; soạn config IPsec mẫu</td><td>Cài EVE + Cloud1; dựng khung script + inventory</td><td>Tối: lab chạy được ở 4 máy, schema chốt</td></tr>
+<tr><td>2</td><td>VLAN, trunk, LACP, STP</td><td>Subinterface, OSPF 3 site, ISP + eBGP</td><td>IPsec + Tunnel10/20 (trên topo 4 router)</td><td>PAT, ACL Guest (viết trước, test trên lab router)</td><td>eBGP Established, tunnel up</td></tr>
+<tr><td>3</td><td>SVI, HSRP, DHCP/DNS, relay</td><td>Tunnel vào OSPF, summarization, default route</td><td>Ping 10.x xuyên site; bắt đầu QoS</td><td>Script backup + VLAN chạy được với CORE</td><td><b>Tích hợp #1</b>: PC chi nhánh nhận DHCP từ HQ</td></tr>
+<tr><td>4</td><td>Hoàn thiện Draw.io (logical + physical); viết Ch.2–3</td><td>IPv6 + OSPFv3 HQ; viết Ch.4–5</td><td>QoS xong + test counter; viết Ch.6–7</td><td>Port Security, Snooping, DAI; idempotent + error handling</td><td>Mỗi phần có đủ ảnh bằng chứng</td></tr>
+<tr><td>5</td><td colspan="4">Gộp toàn bộ .cfg vào máy demo, chạy full topo, sửa xung đột. Test failover. Chụp lại ảnh bằng chứng trên topo cuối.</td><td><b>Tích hợp #2</b>: checklist mục 6 đạt hết</td></tr>
+<tr><td>6</td><td colspan="4">Viết nốt báo cáo (P4 viết Ch.1 + Ch.8 + Ch.9 Testing, ghép file, TOC, số trang), README, diễn tập demo 15 phút, quay video dự phòng.</td><td>Báo cáo bản gần cuối</td></tr>
+<tr><td>7</td><td colspan="4">Cả nhóm soát lỗi chính tả/tiếng Anh, sửa AI-prose, đối chiếu config trong báo cáo với file .cfg, nén ZIP / push GitHub.</td><td><b>Nộp</b></td></tr>
+</table>
+
+<h2>5. BÁO CÁO KỸ THUẬT (theo rubric báo cáo)</h2>
+<table>
+<tr><th style="width:30%">Chương</th><th style="width:10%">Người viết</th><th style="width:10%">Rubric</th><th>Nội dung bắt buộc</th></tr>
+<tr><td>1. Executive Summary</td><td>P4</td><td>10%</td><td>1 trang, ngôn ngữ cho lãnh đạo: vấn đề TVI (flat network, broadcast storm, latency, bảo mật yếu) → giải pháp (phân tầng, dự phòng, overlay mã hóa, QoS voice, automation). Có bảng “nhu cầu → giải pháp”.</td></tr>
+<tr><td>2. Architecture &amp; Topology</td><td>P1</td><td rowspan="2">15%</td><td>Sơ đồ logical + physical, giải thích 3 site, demarcation, vùng L2/L3, trust zones (Corp / Guest / Mgmt / WAN).</td></tr>
+<tr><td>3. Layer 2, STP, HSRP, DHCP/DNS</td><td>P1</td><td>Lý do chọn Rapid-PVST+, LACP, HSRP; cách DHCP relay hoạt động qua tunnel.</td></tr>
+<tr><td>4. IP Addressing (IPv4/IPv6)</td><td>P2</td><td>15%</td><td>Bảng VLSM, cách tính, khả năng mở rộng 10k+, khối /52 IPv6 mỗi site, summarization.</td></tr>
+<tr><td>5. Underlay (OSPF) &amp; eBGP</td><td>P2</td><td rowspan="2">20%</td><td>Vì sao OSPF đa vùng trong site, eBGP với ISP; <b>giải thích tương tác underlay ↔ overlay</b> (rubric nhắc rõ).</td></tr>
+<tr><td>6. WAN Overlay GRE/IPsec</td><td>P3</td><td>Vì sao GRE over IPsec (chạy được OSPF, mã hóa cho EXEC_FINANCE), so sánh ngắn với EVPN/SD-WAN và lý do không làm.</td></tr>
+<tr><td>7. QoS</td><td>P3</td><td rowspan="2">15%</td><td>Bảng class → DSCP → hàng đợi, giải thích LLQ, kết quả counter.</td></tr>
+<tr><td>8. Security &amp; Automation</td><td>P4</td><td>Logic từng dòng ACL, NAT, L2 security; 1 đoạn hướng ZTNA/micro-segmentation; sơ đồ luồng script (flowchart) + giải thích idempotency, xử lý lỗi, bảo mật credential.</td></tr>
+<tr><td>9. Testing, Verification &amp; Failover</td><td>Cả nhóm (P4 ghép)</td><td>15%</td><td>Bảng test case (mục 6) có cột Expected / Result / Ảnh; failover có thời gian hội tụ.</td></tr>
+<tr><td>10. Kết luận, giới hạn, hướng phát triển</td><td>P4</td><td rowspan="2">10%</td><td>Giới hạn lab (1 edge/site, không EVPN/SD-WAN), đề xuất bước tiếp theo.</td></tr>
+<tr><td>Hình thức</td><td>Cả nhóm</td><td>Tiếng Anh, 1 file PDF, có TOC, số trang, caption hình, tài liệu tham khảo. <b>Không để văn AI nguyên bản</b> – mỗi người tự viết lại phần mình.</td></tr>
+</table>
+
+<h3>5.1. Gói nộp (đúng trang 23 của đề + README)</h3>
+<pre>TVI_Project_GroupXX/
+├── README.md                         &lt;- cách dựng lab, nạp config, chạy script
+├── Report/
+│   └── TVI_Technical_Explanation_Report.pdf
+├── Design/
+│   ├── TVI_Logical_Topology.drawio / .png
+│   ├── TVI_Physical_Topology.png
+│   └── TVI_IP_Addressing_Schema.md
+├── Configurations/
+│   ├── HQ_Startup_Configs/           &lt;- HCMC-EDGE-RTR01, CORE, DIST1, DIST2, ISP-CLOUD-RTR01
+│   ├── Hanoi_Startup_Configs/        &lt;- HANOI-RND-RTR01, SW01, SW02
+│   └── DaNang_Startup_Configs/       &lt;- DANANG-LOG-RTR01, SW01
+└── Automation/
+    ├── inventory.yaml
+    ├── auto_provision.py
+    ├── requirements.txt
+    ├── backups/
+    └── logs/automation.log</pre>
+
+<h2>6. CHECKLIST KIỂM THỬ (dùng cho chương 9 và buổi tích hợp)</h2>
+<table>
+<tr><th style="width:5%">#</th><th>Test</th><th style="width:30%">Kết quả mong đợi</th><th style="width:7%">Bước</th></tr>
+<tr><td>T1</td><td>VPCS mọi site <code>ip dhcp</code></td><td>Nhận IP đúng subnet, gateway, DNS 10.10.254.1</td><td>4</td></tr>
+<tr><td>T2</td><td><code>show spanning-tree</code> trên CORE</td><td>Root của mọi VLAN</td><td>3</td></tr>
+<tr><td>T3</td><td><code>show etherchannel summary</code></td><td>Po1/Po2 cờ (SU), member (P)</td><td>3</td></tr>
+<tr><td>T4</td><td>Ping Loopback trong từng site, <code>show ip ospf neighbor</code></td><td>FULL, ping thành công</td><td>5</td></tr>
+<tr><td>T5</td><td><code>show ip bgp summary</code> trên ISP</td><td>3 neighbor có số prefix nhận</td><td>6</td></tr>
+<tr><td>T6</td><td>PC-HN-RND ping + traceroute PC-HQ-EXEC</td><td>Thành công, hop qua 10.255.255.x; <code>show crypto ipsec sa</code> encaps tăng</td><td>6</td></tr>
+<tr><td>T7</td><td>PC mọi site ping 8.8.8.8</td><td>Thành công, có bản dịch trong <code>show ip nat translations</code></td><td>7</td></tr>
+<tr><td>T8</td><td>PC-GUEST ping PC-EXEC / 192.168.1.10 / 8.8.8.8</td><td>Thất bại / thất bại / thành công</td><td>7</td></tr>
+<tr><td>T9</td><td>Cắm thêm MAC lạ / ARP giả</td><td>Port Security restrict, DAI drop (log)</td><td>7</td></tr>
+<tr><td>T10</td><td>UDP 16500 và 5004 xuyên WAN</td><td>Counter class VOICE/VIDEO tăng</td><td>8</td></tr>
+<tr><td>T11</td><td>Chạy script 2 lần + tắt 1 switch</td><td>Lần 1 có thay đổi, lần 2 không đổi; switch chết được log, script không crash</td><td>9</td></tr>
+<tr><td>T12</td><td><b>Failover L2:</b> <code>ping -t</code> từ PC-HQ-EXEC tới 8.8.8.8, <code>shutdown</code> Po1 trên CORE</td><td>Mất ≤ vài gói, link DIST1↔DIST2 chuyển forwarding (Rapid-PVST)</td><td>10</td></tr>
+<tr><td>T13</td><td><b>Failover gateway:</b> tắt DIST1 (hoặc shutdown SVI)</td><td>DIST2 lên Active trong ~10 s, PC vẫn ra Internet; bật lại DIST1 thì preempt</td><td>10</td></tr>
+</table>
+
+<h3>6.1. Kịch bản demo 15 phút</h3>
+<ul>
+<li><b>Phút 1–3:</b> topo trên EVE + sơ đồ Draw.io + bảng IP (P1, P2).</li>
+<li><b>Phút 4–8:</b> ping/traceroute HN, ĐN → HQ qua tunnel, show crypto, ping Internet, Guest bị chặn (P3, P4).</li>
+<li><b>Phút 9–12:</b> failover T12, T13 với <code>ping -t</code> chạy liên tục (P1).</li>
+<li><b>Phút 13–15:</b> chạy <code>auto_provision.py</code> trực tiếp, mở file backup + log (P4).</li>
+</ul>
+
+<div class="ok"><b>Ưu tiên khi trễ tiến độ:</b> luôn giữ đủ 10 bước ở mức “chạy được + có ảnh”. Nếu thiếu giờ, cắt theo thứ tự: (1) OSPFv3/IPv6 trên thiết bị (vẫn giữ IPv6 trong schema), (2) Port Security trên HQ, (3) bản ghi DNS phụ, (4) sơ đồ vật lý riêng. <b>Không cắt</b>: HSRP, DHCP relay, tunnel, NAT/ACL Guest, QoS counter, script, failover.</div>
+
+</body>
+</html>

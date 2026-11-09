@@ -1,0 +1,55 @@
+# ==========================================
+# TVI Enterprise Network Project - .gitignore
+# ==========================================
+
+# Python Virtual Environments & Cache
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Automation runtime generated files (Keep folders via .gitkeep)
+Automation/backups/*.cfg
+!Automation/backups/.gitkeep
+Automation/logs/*.log
+!Automation/logs/.gitkeep
+
+# Hypervisor & Disk Images (Do NOT push multi-GB VM disks or images)
+*.ova
+*.iso
+*.vmdk
+*.qcow2
+*.img
+*.vmem
+*.nvram
+*.lck
+*.vmsd
+*.vmx
+*.vmxf
+
+# Lab exports temporary / large dumps
+*.pcap
+*.pcapng
+*.tar
+*.tar.gz
+
+# OS specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# Editors & IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace

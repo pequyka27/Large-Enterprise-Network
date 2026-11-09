@@ -1,0 +1,5 @@
+# TVI Network Automation Dependencies (Netmiko & PyYAML)
+netmiko>=4.3.0
+pyyaml>=6.0.1
+paramiko>=3.4.0
+scp>=0.14.5
