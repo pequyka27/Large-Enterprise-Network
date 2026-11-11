@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>TVI ENTERPRISE NETWORK – QUY CHUẨN KỸ THUẬT & PHÂN CHIA NHIỆM VỤ (BẢN 3 NGƯỜI - SPRINT 7 NGÀY)</title>
+<style>
+
+  @page {
+    size: A4 portrait;
+    margin: 12mm 12mm 14mm 12mm;
+    @bottom-right {
+      content: "Trang " counter(page);
+      font-size: 7.5pt;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #64748b;
+      font-weight: 600;
+    }
+    @bottom-left {
+      content: "TVI Enterprise Network • Đồ án Mạng Máy Tính & Quản Trị Mạng (HCMUT)";
+      font-size: 7.5pt;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #94a3b8;
+    }
+  }
+
+  *, *:before, *:after { box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 8.6pt;
+    line-height: 1.38;
+    color: #1e293b;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 14.5pt;
+    font-weight: 800;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin: 0 0 2px 0;
+    border-bottom: 2.2px solid #1e3a8a;
+    padding-bottom: 3px;
+  }
+
+  .subtitle {
+    font-size: 9pt;
+    font-weight: 600;
+    color: #2563eb;
+    margin: 0 0 6px 0;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 10.8pt;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(90deg, #0f294a, #1e3a8a, #2563eb);
+    padding: 4px 8px;
+    margin: 12px 0 6px 0;
+    border-radius: 3px;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .person-break { page-break-before: always; break-before: page; }
+  .part-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  h3 {
+    font-size: 9.6pt;
+    font-weight: 700;
+    color: #0f294a;
+    border-bottom: 1.2px solid #cbd5e1;
+    padding-bottom: 2px;
+    margin: 10px 0 4px 0;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  h4 {
+    font-size: 8.8pt;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin: 7px 0 3px 0;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  p { margin: 2px 0 4px 0; }
+
+  /* Metadata Table */
+  .meta-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 6px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 3px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .meta-table td {
+    padding: 2.5px 6px;
+    font-size: 8.2pt;
+    border: none;
+    vertical-align: top;
+  }
+  .meta-label {
+    font-weight: 700;
+    color: #334155;
+    width: 13%;
+  }
+  .meta-val { color: #0f172a; }
+
+  /* Tables */
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px 0 7px 0;
+    font-size: 8pt;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  table.data-table th, table.data-table td {
+    border: 1px solid #cbd5e1;
+    padding: 3px 5px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  table.data-table th {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-weight: 700;
+  }
+  table.data-table tr:nth-child(even) td { background-color: #f8fafc; }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 1px 4px;
+    border-radius: 2.5px;
+    font-size: 7.2pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-p1 { background-color: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+  .badge-p2 { background-color: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+  .badge-p3 { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .badge-all { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+
+  /* Callouts */
+  .callout {
+    padding: 5px 8px;
+    margin: 5px 0;
+    border-radius: 3px;
+    border-left: 3.5px solid;
+    font-size: 8.2pt;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .callout-info { background-color: #eff6ff; border-color: #2563eb; color: #1e40af; }
+  .callout-warn { background-color: #fef2f2; border-color: #dc2626; color: #991b1b; }
+  .callout-success { background-color: #f0fdf4; border-color: #16a34a; color: #166534; }
+  .callout-tip { background-color: #faf5ff; border-color: #9333ea; color: #6b21a8; }
+
+  /* Code & Pre */
+  code {
+    font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace;
+    font-size: 7.8pt;
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 0.5px 3.5px;
+    border-radius: 2px;
+    border: 1px solid #e2e8f0;
+  }
+  pre {
+    font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace;
+    font-size: 7.6pt;
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 5px 8px;
+    border-radius: 3px;
+    overflow-x: auto;
+    margin: 4px 0 6px 0;
+    line-height: 1.3;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  ul, ol { margin: 2px 0 4px 0; padding-left: 16px; }
+  li { margin-bottom: 2px; }
+
+  .highlight { font-weight: 700; color: #dc2626; }
+  
+  .deliverable-box {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-left: 3.5px solid #0284c7;
+    padding: 4px 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 0 3px 3px 0;
+    font-size: 8pt;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .test-guide {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 3.5px solid #10b981;
+    padding: 4px 8px;
+    margin: 4px 0;
+    border-radius: 0 3px 3px 0;
+    font-size: 8pt;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+</style>
+</head>
+<body>
+
+
+  <h1>TVI ENTERPRISE NETWORK &mdash; PHÂN CHIA NHIỆM VỤ &amp; QUY CHUẨN KỸ THUẬT</h1>
+  <div class="subtitle">Đặc tả triển khai hệ thống cho nhóm 3 thành viên • Sprint cấp tốc 7 ngày • Chuẩn Rubric 10 Điểm</div>
+
+  <table class="meta-table">
+    <tr>
+      <td class="meta-label">Đồ án:</td>
+      <td class="meta-val"><strong>Large Enterprise Network Design &amp; Implementation (TechViet Innovations - TVI)</strong></td>
+      <td class="meta-label">Môn học:</td>
+      <td class="meta-val">Mạng Máy Tính &amp; Quản Trị Mạng (HCMUT)</td>
+    </tr>
+    <tr>
+      <td class="meta-label">Quy mô nhóm:</td>
+      <td class="meta-val"><strong>3 Thành viên</strong> (P1: LAN &amp; Dịch vụ, P2: Routing &amp; WAN, P3: Bảo mật, QoS &amp; Automation)</td>
+      <td class="meta-label">Thời hạn:</td>
+      <td class="meta-val"><strong class="highlight">Sprint 7 Ngày</strong> (Tập trung 100% vào tiêu chí Rubric 10 điểm, không làm việc dư thừa)</td>
+    </tr>
+    <tr>
+      <td class="meta-label">Nền tảng lab:</td>
+      <td class="meta-val">EVE-NG Community / GNS3 (Cisco vIOS 15.x L3 &amp; vIOS-L2 15.2) trên VMware Workstation</td>
+      <td class="meta-label">Tự động hóa:</td>
+      <td class="meta-val">Python 3 + Netmiko + PyYAML (Chạy trực tiếp từ máy trạm qua mạng quản trị)</td>
+    </tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>NGUYÊN TẮC CỐT LÕI CỦA SPRINT 7 NGÀY (3 THÀNH VIÊN):</strong><br>
+    1. <strong>Tự chủ hoàn toàn (100% Independence):</strong> Mỗi người có môi trường test độc lập, cấu hình theo các bảng quy chuẩn cố định trong tài liệu này mà không cần chờ đợi người khác.<br>
+    2. <strong>Chuẩn hóa chống xung đột (Standardized Baseline):</strong> Tuyệt đối không tự ý đổi Hostname, Interface, IP, VLAN. File cấu hình chia theo các Block có header comment riêng để khi gộp không bao giờ bị đè code.<br>
+    3. <strong>Bám sát tuyệt đối Rubric 10 điểm:</strong> Chỉ làm các tính năng có trong cột Expected Outcome của 10 bước chấm điểm. Mọi công nghệ ngoài tầm (EVPN-VXLAN, SD-WAN, ZTNA, WLC phần cứng) được chuyển thành nội dung phân tích lý thuyết và định hướng phát triển trong Báo cáo.
+  </div>
+
+  <h2>PHẦN I: OVERVIEW NỘI DUNG 3 PHẦN CHO 3 NGƯỜI &amp; QUY CHUẨN DÙNG CHUNG</h2>
+
+  <h3>1. Ma trận Phân công 10 Bước Rubric (10.0 Điểm) &amp; Trách nhiệm Báo cáo</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 5%;">Bước</th>
+        <th style="width: 24%;">Hạng mục Rubric (1.0đ/bước)</th>
+        <th style="width: 46%;">Yêu cầu kỹ thuật cốt lõi (Expected Outcome)</th>
+        <th style="width: 12%;">Phụ trách</th>
+        <th style="width: 13%;">Chương Báo cáo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>B1</strong></td>
+        <td><strong>Phân tích yêu cầu &amp; Sơ đồ Topology</strong></td>
+        <td>Vẽ sơ đồ Draw.io/Visio: HQ, 2 chi nhánh, ISP, ranh giới LAN/WAN/ISP (demarcation), VLAN, subnet, L2/L3. Dựng lab <code>TVI_Lab.unl</code>.</td>
+        <td><span class="badge badge-p1">Người 1 (P1)</span></td>
+        <td>Chương 2 (15%)</td>
+      </tr>
+      <tr>
+        <td><strong>B2</strong></td>
+        <td><strong>Chiến lược Địa chỉ IP &amp; Subnetting</strong></td>
+        <td>Bảng VLSM IPv4 theo user hiện tại (4.000+) &amp; mở rộng (10.000+), phân cấp IPv6 <code>2001:db8:7a1::/48</code> (/64 per VLAN). File Schema.</td>
+        <td><span class="badge badge-p2">Người 2 (P2)</span></td>
+        <td>Chương 4 (15%)</td>
+      </tr>
+      <tr>
+        <td><strong>B3</strong></td>
+        <td><strong>Hạ tầng Layer 2, Trunking &amp; STP</strong></td>
+        <td>VLAN 10/20/30/40/99/100/999, 802.1Q Trunk, EtherChannel LACP (Po1, Po2), Rapid-PVST+ cố định Root Bridge tại HQ-CORE.</td>
+        <td><span class="badge badge-p1">Người 1 (P1)</span></td>
+        <td>Chương 3 (15% chung)</td>
+      </tr>
+      <tr>
+        <td><strong>B4</strong></td>
+        <td><strong>Dự phòng Gateway &amp; Dịch vụ IP</strong></td>
+        <td>HSRP v2 (VIP .1, Pri 110/100 preempt) tại HQ; Centralized DHCP Server &amp; DNS trên HQ-EDGE; DHCP Relay trên SVI/Subinterface.</td>
+        <td><span class="badge badge-p1">Người 1 (P1)</span></td>
+        <td>Chương 3 (15% chung)</td>
+      </tr>
+      <tr>
+        <td><strong>B5</strong></td>
+        <td><strong>Định tuyến nội bộ Underlay (IGP)</strong></td>
+        <td>OSPFv2 đa vùng (HQ Area 0, HN Area 1, ĐN Area 2); Loopback0 mọi node; passive-interface mạng user; route summarization /16 tại ABR.</td>
+        <td><span class="badge badge-p2">Người 2 (P2)</span></td>
+        <td>Chương 5 (20% chung)</td>
+      </tr>
+      <tr>
+        <td><strong>B6</strong></td>
+        <td><strong>Overlay Routing (BGP) &amp; WAN Edge</strong></td>
+        <td>eBGP với ISP AS 65100 nhận Default Route (Direct Cloud); 2 đường GRE over IPsec VPN nối HQ↔HN và HQ↔ĐN chạy OSPF qua Tunnel.</td>
+        <td><span class="badge badge-p2">Người 2 (P2)</span></td>
+        <td>Chương 5 &amp; 6</td>
+      </tr>
+      <tr>
+        <td><strong>B7</strong></td>
+        <td><strong>Bảo mật &amp; Hardening Thiết bị</strong></td>
+        <td>PAT/NAT Overload ra Internet; ACL cô lập Guest khỏi Corp &amp; Mgmt; L2 Security (Port Security max 2, DHCP Snooping, DAI).</td>
+        <td><span class="badge badge-p3">Người 3 (P3)</span></td>
+        <td>Chương 8 (15% chung)</td>
+      </tr>
+      <tr>
+        <td><strong>B8</strong></td>
+        <td><strong>Chất lượng Dịch vụ (QoS DiffServ)</strong></td>
+        <td>Phân loại MQC, đánh dấu DSCP EF (Voice UDP 16384-32767), AF31 (Video UDP 5004-5005), hàng đợi ưu tiên LLQ/CBWFQ trên cổng WAN.</td>
+        <td><span class="badge badge-p3">Người 3 (P3)</span></td>
+        <td>Chương 7 (15%)</td>
+      </tr>
+      <tr>
+        <td><strong>B9</strong></td>
+        <td><strong>Tự động hóa Mạng (Automation)</strong></td>
+        <td>Script Python Netmiko: đọc YAML inventory, sao lưu running-config timestamp trước/sau, cấu hình baseline + VLAN idempotent, log lỗi.</td>
+        <td><span class="badge badge-p3">Người 3 (P3)</span></td>
+        <td>Chương 8 (15% chung)</td>
+      </tr>
+      <tr>
+        <td><strong>B10</strong></td>
+        <td><strong>Kiểm thử, Xác minh &amp; Tổng hợp</strong></td>
+        <td>Kiểm tra thông tuyến ping/traceroute end-to-end, đo thời gian Failover &lt; 3 phút; ráp hoàn chỉnh Báo cáo PDF (TOC, Header); Demo.</td>
+        <td><span class="badge badge-p3">P3 chủ trì</span> + <span class="badge badge-all">P1, P2</span></td>
+        <td>Ch. 1, 9, 10 &amp; Ghép</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <h3>2. Danh mục Công nghệ: Triển khai thực tế vs. Trình bày lý thuyết</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 28%;">Công nghệ trong Đề bài</th>
+        <th style="width: 27%;">Xử lý trong Lab (Cấu hình thực tế)</th>
+        <th style="width: 45%;">Cách giải trình trong Báo cáo (Report Rationale)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>EVPN-VXLAN / Spine-Leaf Data Center</strong></td>
+        <td><strong>Không cấu hình</strong> (vIOS không hỗ trợ data plane VXLAN).</td>
+        <td>Đề bài cho phép chọn <i>"iBGP/EVPN hoặc IPsec tunnels"</i>. Giải thích TVI chọn GRE over IPsec vì tính tương thích cao và nhẹ tài nguyên; dành EVPN làm định hướng tương lai.</td>
+      </tr>
+      <tr>
+        <td><strong>SD-WAN, Dual-ISP, MPLS</strong></td>
+        <td><strong>Không cấu hình</strong> (Mô phỏng 1 ISP BGP AS 65100).</td>
+        <td>Trình bày mô hình Direct Cloud Access qua eBGP là bước đệm tối ưu hóa latency cho chi nhánh trước khi nâng cấp giải pháp SD-WAN chuyên dụng.</td>
+      </tr>
+      <tr>
+        <td><strong>ZTNA, NGFW, Zone-Based Firewall</strong></td>
+        <td>Dùng <strong>Extended ACLs</strong> + <strong>PAT</strong> + <strong>L2 Security</strong>.</td>
+        <td>Viết 1 mục trong Chương 8 về nguyên lý Zero Trust (ZTNA), giải thích cách phân tách Micro-segmentation bằng VLAN/ACL và vai trò của NGFW biên.</td>
+      </tr>
+      <tr>
+        <td><strong>WLC, CAPWAP, Wi-Fi 6/7</strong></td>
+        <td>Mô phỏng bằng Access Switch + Subnet VLAN riêng.</td>
+        <td>Đưa sơ đồ WLC tập trung vào phần kiến trúc logic, phân tích lưu lượng IoT qua đường truyền không dây tốc độ cao tại trung tâm phân phối Đà Nẵng.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>3. Bộ Quy chuẩn Kỹ thuật Bất biến (The Immutable Baseline)</h3>
+  <div class="callout callout-warn" style="margin-top:0;">
+    <strong>QUY TẮC ĐÓNG BĂNG:</strong> Mọi thông số dưới đây được <strong>cố định 100%</strong>. Không thành viên nào được tự ý thay đổi hostname, interface, IP, VLAN để đảm bảo ghép nối file tự động.
+  </div>
+
+  <h4>3.1. Danh mục Thiết bị &amp; Hostname Chuẩn (10 Nodes)</h4>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Site</th>
+        <th>Hostname chuẩn</th>
+        <th>Loại Image</th>
+        <th>RAM</th>
+        <th>Vai trò &amp; Chức năng kỹ thuật</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="4"><strong>HQ (TP.HCM)</strong></td>
+        <td><code>HCMC-EDGE-RTR01</code></td>
+        <td>Cisco vIOS (L3)</td>
+        <td>512 MB</td>
+        <td>Router biên HQ: eBGP ra ISP, Hub IPsec VPN, PAT Internet, Centralized DHCP &amp; DNS, QoS.</td>
+      </tr>
+      <tr>
+        <td><code>HCMC-CORE-SW01</code></td>
+        <td>Cisco vIOS-L2</td>
+        <td>768 MB</td>
+        <td>Switch Core L2: Hội tụ EtherChannel LACP, Primary Root Bridge toàn bộ VLANs, nối mạng quản trị.</td>
+      </tr>
+      <tr>
+        <td><code>HCMC-DIST-SW01</code></td>
+        <td>Cisco vIOS-L2</td>
+        <td>768 MB</td>
+        <td>L3 Switch Phân phối: SVIs, HSRP Active (Priority 110), OSPF Area 0, Access Port PC.</td>
+      </tr>
+      <tr>
+        <td><code>HCMC-DIST-SW02</code></td>
+        <td>Cisco vIOS-L2</td>
+        <td>768 MB</td>
+        <td>L3 Switch Phân phối: SVIs, HSRP Standby (Priority 100), OSPF Area 0, Access Port PC.</td>
+      </tr>
+      <tr>
+        <td rowspan="3"><strong>Hà Nội (HN Branch)</strong></td>
+        <td><code>HANOI-RND-RTR01</code></td>
+        <td>Cisco vIOS (L3)</td>
+        <td>512 MB</td>
+        <td>Router biên HN: eBGP, Spoke IPsec, Router-on-a-stick, DHCP Relay, OSPF ABR (Area 1).</td>
+      </tr>
+      <tr>
+        <td><code>HANOI-RND-SW01</code></td>
+        <td>Cisco vIOS-L2</td>
+        <td>768 MB</td>
+        <td>Distribution Switch: STP Root của site HN, Trunking subinterface lên router, Port-channel.</td>
+      </tr>
+      <tr>
+        <td><code>HANOI-RND-SW02</code></td>
+        <td>Cisco vIOS-L2</td>
+        <td>768 MB</td>
+        <td>Access Switch: Cổng cắm PC, bảo mật Port Security, DHCP Snooping, DAI.</td>
+      </tr>
+      <tr>
+        <td rowspan="2"><strong>Đà Nẵng (ĐN Hub)</strong></td>
+        <td><code>DANANG-LOG-RTR01</code></td>
+        <td>Cisco vIOS (L3)</td>
+        <td>512 MB</td>
+        <td>Router biên ĐN: eBGP, Spoke IPsec, Router-on-a-stick, DHCP Relay, OSPF ABR (Area 2).</td>
+      </tr>
+      <tr>
+        <td><code>DANANG-LOG-SW01</code></td>
+        <td>Cisco vIOS-L2</td>
+        <td>768 MB</td>
+        <td>Access Switch: STP Root của site ĐN, Trunking lên router, Port Security, Snooping, DAI.</td>
+      </tr>
+      <tr>
+        <td><strong>ISP</strong></td>
+        <td><code>ISP-CLOUD-RTR01</code></td>
+        <td>Cisco vIOS (L3)</td>
+        <td>512 MB</td>
+        <td>Giả lập nhà mạng Internet: BGP AS 65100, cấp Default Route, Loopback <code>8.8.8.8/32</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <h4>3.2. Sơ đồ Đấu nối Cáp &amp; Giao tiếp Cổng (Cabling Map)</h4>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Thiết bị Nguồn</th>
+        <th>Cổng Nguồn</th>
+        <th>Thiết bị Đích</th>
+        <th>Cổng Đích</th>
+        <th>Loại Liên Kết &amp; Cấu Hình Bắt Buộc</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>HCMC-EDGE-RTR01</code></td>
+        <td><code>Gi0/0</code> | <code>Gi0/1</code></td>
+        <td><code>ISP-CLOUD-RTR01</code> | <code>HCMC-CORE-SW01</code></td>
+        <td><code>Gi0/0</code> | <code>Gi0/0</code></td>
+        <td>WAN: <code>203.0.113.2/30</code> • LAN: Access VLAN 100 (HQ Transit: <code>10.10.255.0/29</code>)</td>
+      </tr>
+      <tr>
+        <td><code>HCMC-CORE-SW01</code></td>
+        <td><code>Gi0/1,0/2</code> | <code>Gi0/3,1/0</code></td>
+        <td><code>HCMC-DIST-SW01</code> | <code>HCMC-DIST-SW02</code></td>
+        <td><code>Gi0/1,0/2</code> | <code>Gi0/1,0/2</code></td>
+        <td><strong>Port-channel 1</strong> &amp; <strong>Port-channel 2</strong>: LACP Active, 802.1Q Trunk</td>
+      </tr>
+      <tr>
+        <td><code>HCMC-DIST-SW01</code></td>
+        <td><code>Gi0/3</code> | <code>Gi1/0,1/1</code></td>
+        <td><code>HCMC-DIST-SW02</code> | <code>PC-EXEC, PC-GUEST</code></td>
+        <td><code>Gi0/3</code> | <code>eth0</code></td>
+        <td>Trunk dự phòng (STP block 1 đầu) • Access VLAN 10 (Exec), Access VLAN 40 (Guest)</td>
+      </tr>
+      <tr>
+        <td><code>HCMC-DIST-SW02</code></td>
+        <td><code>Gi1/0,1/1</code></td>
+        <td><code>PC-RND, PC-LOG</code></td>
+        <td><code>eth0</code></td>
+        <td>Access VLAN 20 (R&amp;D), Access VLAN 30 (Logistics)</td>
+      </tr>
+      <tr>
+        <td><code>HCMC-CORE-SW01</code></td>
+        <td><code>Gi1/1</code></td>
+        <td><code>Cloud1 (pnet1)</code></td>
+        <td>&mdash;</td>
+        <td>Access VLAN 99 (Mạng Quản trị kết nối máy trạm chạy script Python)</td>
+      </tr>
+      <tr>
+        <td><code>HANOI-RND-RTR01</code></td>
+        <td><code>Gi0/0</code> | <code>Gi0/1</code></td>
+        <td><code>ISP-CLOUD-RTR01</code> | <code>HANOI-RND-SW01</code></td>
+        <td><code>Gi0/1</code> | <code>Gi0/0</code></td>
+        <td>WAN: <code>198.51.100.2/30</code> • LAN: Subinterfaces (Router-on-a-stick Trunk)</td>
+      </tr>
+      <tr>
+        <td><code>HANOI-RND-SW01</code></td>
+        <td><code>Gi0/1,0/2</code> | <code>Gi1/0</code></td>
+        <td><code>HANOI-RND-SW02</code> | <code>PC-HN-EXEC</code></td>
+        <td><code>Gi0/1,0/2</code> | <code>eth0</code></td>
+        <td><strong>Port-channel 1</strong>: LACP Active, Trunk • Access VLAN 10</td>
+      </tr>
+      <tr>
+        <td><code>HANOI-RND-SW02</code></td>
+        <td><code>Gi1/0,1/1</code></td>
+        <td><code>PC-HN-RND, PC-HN-GUEST</code></td>
+        <td><code>eth0</code></td>
+        <td>Access VLAN 20 (R&amp;D), Access VLAN 40 (Guest)</td>
+      </tr>
+      <tr>
+        <td><code>DANANG-LOG-RTR01</code></td>
+        <td><code>Gi0/0</code> | <code>Gi0/1</code></td>
+        <td><code>ISP-CLOUD-RTR01</code> | <code>DANANG-LOG-SW01</code></td>
+        <td><code>Gi0/2</code> | <code>Gi0/0</code></td>
+        <td>WAN: <code>192.0.2.2/30</code> • LAN: Subinterfaces (Router-on-a-stick Trunk)</td>
+      </tr>
+      <tr>
+        <td><code>DANANG-LOG-SW01</code></td>
+        <td><code>Gi1/0,1/1</code></td>
+        <td><code>PC-DN-LOG, PC-DN-GUEST</code></td>
+        <td><code>eth0</code></td>
+        <td>Access VLAN 30 (Logistics), Access VLAN 40 (Guest)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>3.3. Danh mục VLAN Chuẩn Toàn Hệ Thống</h4>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 8%;">VLAN</th>
+        <th style="width: 25%;">Tên VLAN (Chính xác chữ hoa)</th>
+        <th style="width: 15%;">Có mặt tại</th>
+        <th>Mục đích sử dụng &amp; Chính sách an ninh</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>10</code></td><td><code>EXEC_FINANCE</code></td><td>HQ, HN, ĐN</td><td>Ban giám đốc, Tài chính. Ưu tiên bảo mật, mã hóa VPN qua đường hầm IPsec.</td></tr>
+      <tr><td><code>20</code></td><td><code>RND_ENGINEERING</code></td><td>HQ, HN, ĐN</td><td>Kỹ sư R&amp;D, AI Labs. Băng thông nội bộ lớn kết nối tài nguyên máy chủ.</td></tr>
+      <tr><td><code>30</code></td><td><code>LOGISTICS_OPS</code></td><td>HQ, HN, ĐN</td><td>Kho vận, Thiết bị tự hành AGV, Đầu đọc mã vạch, Cảm biến IoT.</td></tr>
+      <tr><td><code>40</code></td><td><code>GUEST</code></td><td>HQ, HN, ĐN</td><td>Khách: <strong>Chỉ được ra Internet qua NAT</strong>, ACL chặn triệt để tới Corp &amp; Mgmt.</td></tr>
+      <tr><td><code>99</code></td><td><code>MANAGEMENT</code></td><td>HQ, HN, ĐN</td><td>Mạng quản trị thiết bị: SSHv2, Python Automation, NTP, Syslog.</td></tr>
+      <tr><td><code>100</code></td><td><code>HQ_TRANSIT</code></td><td>Chỉ tại HQ</td><td>Mạng trung chuyển L3 kết nối Router EDGE với DIST1/DIST2 chạy OSPF Area 0.</td></tr>
+      <tr><td><code>999</code></td><td><code>BLACKHOLE</code></td><td>Mọi Switch</td><td>Gán cho toàn bộ các port switch không cắm dây + lệnh <code>shutdown</code> để chống đột nhập.</td></tr>
+    </tbody>
+  </table>
+
+
+
+  <h4>3.4. Bảng Phân Bổ Địa Chỉ IP Chi Tiết (IPv4 VLSM &amp; IPv6 GUA)</h4>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Khu vực / Mục đích</th>
+        <th>VLAN / Tên</th>
+        <th>Dải IPv4 Subnet</th>
+        <th>Gateway mặc định</th>
+        <th>IPv6 Subnet (/64) &amp; Gateway (::1)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="5"><strong>HQ - TP.HCM</strong><br><code>10.10.0.0/16</code><br><em>(2.000+ users)</em></td>
+        <td>VLAN 20 (R&amp;D - 800u)</td>
+        <td><code>10.10.0.0/22</code></td>
+        <td><code>10.10.0.1</code> (DIST1: .2, DIST2: .3, HSRP)</td>
+        <td><code>2001:db8:7a1:120::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 10 (Exec - 400u)</td>
+        <td><code>10.10.4.0/23</code></td>
+        <td><code>10.10.4.1</code> (DIST1: .2, DIST2: .3, HSRP)</td>
+        <td><code>2001:db8:7a1:110::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 40 (Guest - 400u)</td>
+        <td><code>10.10.6.0/23</code></td>
+        <td><code>10.10.6.1</code> (DIST1: .2, DIST2: .3, HSRP)</td>
+        <td><code>2001:db8:7a1:140::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 30 (Logistics - 200u)</td>
+        <td><code>10.10.8.0/24</code></td>
+        <td><code>10.10.8.1</code> (DIST1: .2, DIST2: .3, HSRP)</td>
+        <td><code>2001:db8:7a1:130::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 100 (HQ Transit)</td>
+        <td><code>10.10.255.0/29</code></td>
+        <td>EDGE: <code>.1</code>, DIST1: <code>.2</code>, DIST2: <code>.3</code></td>
+        <td><code>2001:db8:7a1:1ff::/64</code></td>
+      </tr>
+      <tr>
+        <td rowspan="4"><strong>Chi nhánh Hà Nội</strong><br><code>10.20.0.0/16</code><br><em>(1.500+ users)</em></td>
+        <td>VLAN 20 (R&amp;D - 1.000u)</td>
+        <td><code>10.20.0.0/22</code></td>
+        <td><code>10.20.0.1</code> (Gi0/1.20 HN Router)</td>
+        <td><code>2001:db8:7a1:220::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 40 (Guest - 300u)</td>
+        <td><code>10.20.4.0/23</code></td>
+        <td><code>10.20.4.1</code> (Gi0/1.40 HN Router)</td>
+        <td><code>2001:db8:7a1:240::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 10 (Exec - 100u)</td>
+        <td><code>10.20.6.0/24</code></td>
+        <td><code>10.20.6.1</code> (Gi0/1.10 HN Router)</td>
+        <td><code>2001:db8:7a1:210::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 30 (Logistics - 50u)</td>
+        <td><code>10.20.7.0/26</code></td>
+        <td><code>10.20.7.1</code> (Gi0/1.30 HN Router)</td>
+        <td><code>2001:db8:7a1:230::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td rowspan="5"><strong>Chi nhánh Đà Nẵng</strong><br><code>10.30.0.0/16</code><br><em>(500+ users + IoT)</em></td>
+        <td>VLAN 30 (Logistics - 1.000u)</td>
+        <td><code>10.30.0.0/22</code></td>
+        <td><code>10.30.0.1</code> (Gi0/1.30 ĐN Router)</td>
+        <td><code>2001:db8:7a1:330::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 40 (Guest - 200u)</td>
+        <td><code>10.30.4.0/24</code></td>
+        <td><code>10.30.4.1</code> (Gi0/1.40 ĐN Router)</td>
+        <td><code>2001:db8:7a1:340::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 10 (Exec - 50u)</td>
+        <td><code>10.30.5.0/26</code></td>
+        <td><code>10.30.5.1</code> (Gi0/1.10 ĐN Router)</td>
+        <td><code>2001:db8:7a1:310::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>VLAN 20 (R&amp;D - 20u)</td>
+        <td><code>10.30.5.64/27</code></td>
+        <td><code>10.30.5.65</code> (Gi0/1.20 ĐN Router)</td>
+        <td><code>2001:db8:7a1:320::/64</code> • GW <code>::1</code></td>
+      </tr>
+      <tr>
+        <td>Dự trữ IoT tương lai</td>
+        <td><code>10.30.64.0/18</code></td>
+        <td>Chừa sẵn 16.382 host cho IoT mở rộng</td>
+        <td><code>2001:db8:7a1:3ff::/64</code></td>
+      </tr>
+      <tr>
+        <td><strong>Loopback0 (Mọi node)</strong></td>
+        <td colspan="4">HQ-EDGE: <code>10.10.254.1/32</code> • DIST1: <code>10.10.254.2/32</code> • DIST2: <code>10.10.254.3/32</code> • HN-RTR: <code>10.20.254.1/32</code> • DN-RTR: <code>10.30.254.1/32</code></td>
+      </tr>
+      <tr>
+        <td><strong>Overlay GRE Tunnel</strong></td>
+        <td colspan="4">Tunnel10 (HQ↔HN): <code>10.255.255.0/30</code> (HQ: <code>.1</code>, HN: <code>.2</code>) • Tunnel20 (HQ↔ĐN): <code>10.255.255.4/30</code> (HQ: <code>.5</code>, ĐN: <code>.6</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>WAN Public Links</strong></td>
+        <td colspan="4">HQ-ISP: <code>203.0.113.0/30</code> (ISP .1, HQ .2) • HN-ISP: <code>198.51.100.0/30</code> (ISP .1, HN .2) • ĐN-ISP: <code>192.0.2.0/30</code> (ISP .1, ĐN .2) • ISP Lo0: <code>8.8.8.8/32</code></td>
+      </tr>
+      <tr>
+        <td><strong>Mạng Quản trị (VLAN 99)</strong></td>
+        <td colspan="4">HQ: <code>192.168.1.0/24</code> (GW .1, SW .10, Laptop .100) • HN: <code>192.168.2.0/24</code> (GW .1, SW01 .10, SW02 .11) • ĐN: <code>192.168.3.0/24</code> (GW .1, SW01 .10)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>3.5. Thông số Mã hóa IPsec &amp; AS BGP | 3.6. Cấu trúc Khối Git (Chống Xung Đột)</h4>
+  <p style="font-size:7.5pt;margin:1.5px 0;">
+    • <strong>BGP AS:</strong> ISP: <code>AS 65100</code> • HQ: <code>AS 65001</code> • Hà Nội: <code>AS 65002</code> • Đà Nẵng: <code>AS 65003</code>.<br>
+    • <strong>IPsec Phase 1/2:</strong> AES-256, SHA-256, DH Group 14, Pre-shared Key: <code>TVI_Secret_Key2026!</code>; Transform-set <code>esp-aes 256 esp-sha256-hmac</code>, mode transport, profile <code>TVI-PROF</code>.<br>
+    • <strong>Khối Git chuẩn:</strong> Mỗi thiết bị lưu tại <code>Configurations/&lt;Site&gt;_Startup_Configs/&lt;HOSTNAME&gt;.cfg</code>, chia làm 4 khối phân quyền:
+  </p>
+  <pre>! [BLOCK-0: BASE SYSTEM]    - Baseline chung: Hostname, tvi.lab, user admin/Cisco123!, rsa 2048, SSH v2
+! [BLOCK-1: P1 - L2 &amp; SVC]   - Chỉ Người 1 sửa: VLANs, 802.1Q Trunk, LACP, Rapid-PVST+, SVI, HSRP, DHCP
+! [BLOCK-2: P2 - ROUTING]   - Chỉ Người 2 sửa: OSPF Underlay, Summarization, eBGP ISP, GRE/IPsec Tunnels
+! [BLOCK-3: P3 - SECURITY]  - Chỉ Người 3 sửa: Edge PAT, Guest ACL, Port-Security, Snooping, DAI, QoS MQC</pre>
+
+
+
+  <h2 class="part-break">PHẦN II: HƯỚNG DẪN TRIỂN KHAI CHI TIẾT TỪNG NGƯỜI</h2>
+
+  <h3>1. NGƯỜI 1 (P1) &mdash; HẠ TẦNG LAN, DỰ PHÒNG GATEWAY &amp; DỊCH VỤ IP CỐT LÕI</h3>
+  <div class="callout callout-info">
+    <strong>Vai trò &amp; Mục tiêu:</strong> Sở hữu toàn bộ tầng Switching Layer 2, liên kết tổng hợp EtherChannel LACP, chống vòng lặp Rapid-PVST+, tính sẵn sàng cao Gateway (HSRP v2), và dịch vụ cấp phát IP tập trung (DHCP/DNS). Xây dựng topo nền tảng cho cả nhóm vào Ngày 1.<br>
+    <strong>Rubric phụ trách:</strong> <span class="badge badge-p1">Bước 1</span> (1.0đ) • <span class="badge badge-p1">Bước 3</span> (1.0đ) • <span class="badge badge-p1">Bước 4</span> (1.0đ) • <strong>Báo cáo:</strong> Viết Chương 2 &amp; Chương 3.
+  </div>
+
+  <h4>A. Quy trình Triển khai Từng Bước &amp; Tham số Kỹ thuật</h4>
+  <ol>
+    <li><strong>Dựng Lab EVE-NG &amp; Sơ đồ Draw.io (Bước 1):</strong>
+      <ul>
+        <li>Dựng đúng 10 node trên EVE-NG theo Bảng Cabling 3.2. Cấu hình Cloud1 nối vào VLAN 99. Xuất file <code>TVI_Lab.unl</code> gửi nhóm tối Ngày 1.</li>
+        <li>Vẽ sơ đồ mạng <code>TVI_Logical_Topology.drawio/.png</code>: thể hiện rõ 3 site, icon Cisco chuẩn, ranh giới Demarcation (LAN, WAN, ISP), IP subnets, VLAN IDs, và vùng L2/L3. Thêm 1 sơ đồ đấu dây vật lý (Cabling diagram).</li>
+      </ul>
+    </li>
+    <li><strong>Hạ tầng Switching &amp; Trunking 802.1Q (Bước 3):</strong>
+      <ul>
+        <li>Khai báo danh mục chuẩn: VLAN 10, 20, 30, 40, 99, 100, 999 trên tất cả 6 switch (đúng tên chữ hoa theo Bảng 3.3).</li>
+        <li>Cấu hình Trunk trên toàn bộ đường nối inter-switch và switch-router: <code>switchport trunk encapsulation dot1q</code>, <code>switchport mode trunk</code>, <code>switchport nonegotiate</code>.</li>
+        <li>Blackhole bảo mật: Gán tất cả cổng switch không sử dụng vào <code>VLAN 999 (BLACKHOLE)</code> và gõ lệnh <code>shutdown</code>.</li>
+      </ul>
+    </li>
+    <li><strong>EtherChannel LACP &amp; Rapid-PVST+ (Bước 3):</strong>
+      <ul>
+        <li>Gộp cổng bằng LACP chuẩn (<code>channel-group X mode active</code>): Po1 giữa CORE↔DIST1 (Gi0/1, Gi0/2); Po2 giữa CORE↔DIST2 (Gi0/3, Gi1/0); Po1 giữa HN-SW01↔HN-SW02 (Gi0/1, Gi0/2). Chuyển port-channel sang mode trunk.</li>
+        <li>Kích hoạt <code>spanning-tree mode rapid-pvst</code> trên toàn bộ 6 switch. Ép Root Bridge cứng:
+          <ul>
+            <li><strong>Tại HQ:</strong> <code>HCMC-CORE-SW01</code> làm Primary Root cho toàn bộ VLAN 1-4094 (<code>spanning-tree vlan 1-4094 root primary</code>, priority 4096). <code>DIST-SW01</code> làm Secondary Root (priority 8192).</li>
+            <li><strong>Tại Hà Nội:</strong> <code>HANOI-RND-SW01</code> làm Root (priority 4096). • <strong>Tại Đà Nẵng:</strong> <code>DANANG-LOG-SW01</code> làm Root (priority 4096).</li>
+          </ul>
+        </li>
+        <li>Bật <code>spanning-tree portfast</code> và <code>spanning-tree bpduguard enable</code> trên các cổng access cắm máy tính người dùng.</li>
+      </ul>
+    </li>
+    <li><strong>SVI &amp; Dự phòng Gateway HSRP v2 tại HQ (Bước 4):</strong>
+      <ul>
+        <li>Trên DIST1 và DIST2: bật <code>ip routing</code>, tạo các SVI VLAN 10, 20, 30, 40, 99 gán IP theo Bảng 3.4. (SVI 100 chỉ gán IP chạy OSPF, không bật HSRP).</li>
+        <li>Bật <strong>HSRP version 2</strong> trên từng SVI: <code>standby &lt;vlan_id&gt; ip 10.10.x.1</code> (VIP là <code>.1</code>).</li>
+        <li>Phân cấp ưu tiên: <code>DIST1</code> đặt Priority = <strong>110</strong> + <code>preempt</code> (Active Gateway); <code>DIST2</code> đặt Priority = <strong>100</strong> + <code>preempt</code> (Standby Gateway).</li>
+      </ul>
+    </li>
+    <li><strong>Dịch vụ DHCP Server &amp; DNS Tập trung tại HQ (Bước 4):</strong>
+      <ul>
+        <li>Trên <code>HCMC-EDGE-RTR01</code>: cấu hình 12 DHCP Pools cho 4 VLAN người dùng (10, 20, 30, 40) của cả 3 site. Loại trừ 10 IP đầu mỗi subnet (<code>ip dhcp excluded-address &lt;net&gt;.1 &lt;net&gt;.10</code>). Khai báo <code>default-router</code> (VIP .1 tại HQ, IP subinterface tại chi nhánh), <code>dns-server 10.10.254.1</code>, <code>domain-name tvi.lab</code>.</li>
+        <li>Bật DNS trên EDGE: <code>ip dns server</code> kèm các bản ghi <code>ip host edge.tvi.lab 10.10.254.1</code>, <code>ip host internet.tvi.lab 8.8.8.8</code>.</li>
+        <li>Cấu hình <strong>DHCP Relay</strong>: Gõ <code>ip helper-address 10.10.254.1</code> trên tất cả các SVI của DIST1/DIST2 tại HQ và trên subinterfaces của Router HN/ĐN.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h4>B. Hướng dẫn Tự kiểm thử Độc lập (Independent Verification)</h4>
+  <div class="test-guide">
+    <strong>Cách P1 test riêng không cần chờ P2, P3:</strong><br>
+    - Kiểm tra L2: Gõ <code>show etherchannel summary</code> (cờ <code>SU</code>, các port con <code>P</code>). Gõ <code>show spanning-tree root</code> &rarr; CORE luôn là Root Bridge của tất cả VLAN.<br>
+    - Kiểm tra HSRP: Gõ <code>show standby brief</code> trên DIST1 &rarr; tất cả VLAN đều báo <code>Active</code>; trên DIST2 báo <code>Standby</code>. Thử <code>shutdown</code> SVI 10 trên DIST1 &rarr; DIST2 lập tức nhảy lên <code>Active</code>.<br>
+    - Kiểm tra DHCP: Cắm VPCS vào cổng Gi1/0 của DIST1, gõ <code>ip dhcp</code> &rarr; nhận đúng IP dải VLAN 10, gateway <code>10.10.4.1</code>, DNS <code>10.10.254.1</code>. Gõ <code>show ip dhcp binding</code> trên EDGE kiểm tra bản cấp phát IP.
+  </div>
+
+  <div class="deliverable-box">
+    <strong>SẢN PHẨM BÀN GIAO CỦA P1:</strong><br>
+    • File lab <code>TVI_Lab.unl</code> (bàn giao tối Ngày 1) • File sơ đồ <code>TVI_Logical_Topology.drawio/.png</code>.<br>
+    • Đoạn cấu hình <code>[BLOCK-1]</code> trong file <code>.cfg</code> của 6 Switch và Router EDGE.<br>
+    • Ảnh chụp minh chứng các lệnh show (T2, T3, T13) • Viết nội dung <strong>Chương 2</strong> và <strong>Chương 3</strong> Báo cáo kỹ thuật.
+  </div>
+
+
+
+  <h3 class="person-break">2. NGƯỜI 2 (P2) &mdash; ĐỊA CHỈ IP, ĐỊNH TUYẾN DƯỚI (OSPF) &amp; WAN OVERLAY (BGP + IPSEC)</h3>
+  <div class="callout callout-success">
+    <strong>Vai trò &amp; Mục tiêu:</strong> Làm chủ toàn bộ kiến trúc định tuyến Layer 3: chiến lược cấp phát IP VLSM/IPv6, định tuyến nội bộ Underlay OSPFv2 đa vùng và tóm tắt tuyến ABR, định tuyến biên WAN với eBGP kết nối ISP, và thiết lập đường hầm VPN mã hóa liên site GRE over IPsec.<br>
+    <strong>Rubric phụ trách:</strong> <span class="badge badge-p2">Bước 2</span> (1.0đ) • <span class="badge badge-p2">Bước 5</span> (1.0đ) • <span class="badge badge-p2">Bước 6</span> (1.0đ) • <strong>Báo cáo:</strong> Viết Chương 4, Chương 5, Chương 6.
+  </div>
+
+  <h4>A. Quy trình Triển khai Từng Bước &amp; Tham số Kỹ thuật</h4>
+  <ol>
+    <li><strong>Chiến lược Địa chỉ IP VLSM &amp; IPv6 (Bước 2):</strong>
+      <ul>
+        <li>Soạn hoàn chỉnh file <code>TVI_IP_Addressing_Schema.md</code>: tính toán VLSM IPv4 chi tiết (Network, Subnet Mask, Gateway, Usable Range, Broadcast), chứng minh phân bổ đủ cho 4.000+ user hiện tại và mở rộng khối IoT <code>/18</code> (&gt;16.000 thiết bị) tại Đà Nẵng.</li>
+        <li>Phân cấp IPv6 <code>2001:db8:7a1::/48</code> theo cấu trúc chuẩn <code>:SVV::/64</code> (S = Site: 1 HQ, 2 HN, 3 ĐN; VV = số VLAN). Bàn giao file schema ngay trong Ngày 1.</li>
+      </ul>
+    </li>
+    <li><strong>Định tuyến Nội bộ Underlay OSPFv2 Đa Vùng (Bước 5):</strong>
+      <ul>
+        <li>Khởi tạo OSPF Process 1 trên <code>HCMC-EDGE-RTR01</code>, <code>DIST1</code>, <code>DIST2</code>, <code>HANOI-RND-RTR01</code>, <code>DANANG-LOG-RTR01</code>. Gán <code>router-id</code> là địa chỉ <code>Loopback0</code> của từng node.</li>
+        <li>Phân vùng OSPF:
+          <ul>
+            <li><strong>Area 0 (Backbone):</strong> Chạy trên VLAN 100 tại HQ và trên các kết nối Tunnel liên site (Tunnel10, Tunnel20).</li>
+            <li><strong>Area 1:</strong> Toàn bộ mạng nội bộ Hà Nội (subinterfaces và Loopback0 của HN Router).</li>
+            <li><strong>Area 2:</strong> Toàn bộ mạng nội bộ Đà Nẵng (subinterfaces và Loopback0 của ĐN Router).</li>
+          </ul>
+        </li>
+        <li>Bảo mật định tuyến: Bật <code>passive-interface default</code> và chỉ <code>no passive-interface</code> trên các kết nối L3 trung chuyển nối giữa các router/switch; ngăn chặn phát hello OSPF ra cổng người dùng.</li>
+        <li><strong>Tóm tắt tuyến đường (Summarization):</strong> Trên 2 router chi nhánh (đóng vai trò ABR), tóm tắt toàn bộ dải mạng site về HQ: <code>area 1 range 10.20.0.0 255.255.0.0</code> và <code>area 2 range 10.30.0.0 255.255.0.0</code>. Kiểm tra bảng routing tại HQ chỉ thấy xuất hiện route tóm tắt <code>O IA 10.20.0.0/16</code> và <code>O IA 10.30.0.0/16</code>.</li>
+        <li>Bơm default route: Bật <code>default-information originate</code> trên Router HQ-EDGE để DIST1/DIST2 tự động nhận route <code>0.0.0.0/0</code> nội bộ.</li>
+      </ul>
+    </li>
+    <li><strong>Định tuyến Biên WAN với eBGP &amp; Direct Cloud Access (Bước 6):</strong>
+      <ul>
+        <li>Cấu hình <code>ISP-CLOUD-RTR01</code>: BGP AS <strong>65100</strong>, quảng bá <code>8.8.8.8/32</code>, thiết lập eBGP neighbor với 3 router khách hàng kèm lệnh <code>default-originate</code> để đẩy route mặc định <code>0.0.0.0/0</code>.</li>
+        <li>Cấu hình eBGP trên 3 Router biên: HQ AS <strong>65001</strong>, HN AS <strong>65002</strong>, ĐN AS <strong>65003</strong>. Chỉ quảng bá đúng dải <code>/30</code> kết nối WAN trực tiếp.</li>
+        <li><span class="highlight">Quy tắc vàng:</span> Tuyệt đối <strong>không</strong> đưa dải private <code>10.x.x.x</code> vào BGP và <strong>không</strong> đưa IP public WAN vào OSPF để tránh lỗi định tuyến đệ quy (recursive routing sập tunnel). Các chi nhánh nhận default route từ ISP để đi Internet trực tiếp (Direct Cloud Access).</li>
+      </ul>
+    </li>
+    <li><strong>Đường hầm Mã hóa GRE over IPsec VPN (Bước 6):</strong>
+      <ul>
+        <li>Cấu hình ISAKMP Phase 1 trên 3 router: Policy 10 (AES-256, SHA-256, DH group 14), Pre-shared Key <code>TVI_Secret_Key2026!</code> trỏ tới IP public WAN của đầu đối diện.</li>
+        <li>Cấu hình IPsec Phase 2: Transform-set <code>esp-aes 256 esp-sha256-hmac</code> chế độ <code>mode transport</code>, gắn vào profile <code>TVI-PROF</code>.</li>
+        <li>Khởi tạo <strong>Tunnel10 (HQ↔HN)</strong> và <strong>Tunnel20 (HQ↔ĐN)</strong>: Đặt IP theo Bảng 3.4. Gán <code>tunnel protection ipsec profile TVI-PROF</code>. Tối ưu phân mảnh gói tin: <code>ip mtu 1400</code>, <code>ip tcp adjust-mss 1360</code>, và <code>ip ospf network point-to-point</code>. Gán tunnel vào OSPF Area 0.</li>
+      </ul>
+    </li>
+    <li><strong>IPv6 Dual-Stack &amp; OSPFv3 tại HQ (Bước 2, 5 mở rộng):</strong>
+      <ul>
+        <li>Bật <code>ipv6 unicast-routing</code> trên EDGE, DIST1, DIST2. Gán địa chỉ IPv6 theo cấu trúc <code>2001:db8:7a1:1xx::/64</code> cho các SVI và transit VLAN 100. Kích hoạt <code>ipv6 router ospf 1</code> trong Area 0 tại HQ.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h4>B. Hướng dẫn Tự kiểm thử Độc lập (Independent Verification)</h4>
+  <div class="test-guide">
+    <strong>Cách P2 test riêng không cần chờ P1:</strong><br>
+    - Dựng lab thu nhỏ gồm 4 Router (HQ-EDGE, HN-RTR, DN-RTR, ISP). Trên HN và DN, tạo các subinterface ảo để giả lập các VLAN người dùng. Như vậy P2 kiểm tra được 100% định tuyến mà không cần switch của P1!<br>
+    - Kiểm tra OSPF: Gõ <code>show ip ospf neighbor</code> &rarr; đạt trạng thái <code>FULL</code>. Gõ <code>show ip route ospf</code> trên HQ &rarr; thấy các tuyến tóm tắt <code>O IA 10.20.0.0/16</code> và <code>10.30.0.0/16</code>.<br>
+    - Kiểm tra eBGP: Gõ <code>show ip bgp summary</code> trên ISP &rarr; 3 neighbor <code>Established</code>. Trên router biên gõ <code>show ip route bgp</code> &rarr; thấy default route <code>0.0.0.0/0</code> trỏ ra ISP.<br>
+    - Kiểm tra VPN: Gõ <code>show interface tunnel10</code> &rarr; <code>up/up</code>. Gõ <code>show crypto isakmp sa</code> &rarr; <code>QM_IDLE</code>. Gõ <code>show crypto ipsec sa</code> &rarr; đếm gói tăng khi ping xuyên site.
+  </div>
+
+  <div class="deliverable-box">
+    <strong>SẢN PHẨM BÀN GIAO CỦA P2:</strong><br>
+    • Tài liệu <code>TVI_IP_Addressing_Schema.md</code> hoàn chỉnh (bàn giao Ngày 1).<br>
+    • Đoạn cấu hình <code>[BLOCK-2]</code> trên 4 Router, 2 L3 Switch và Router ISP.<br>
+    • Ảnh chụp minh chứng các lệnh show (T4, T5, T6, T7) • Viết nội dung <strong>Chương 4, 5, 6</strong> Báo cáo kỹ thuật.
+  </div>
+
+
+
+  <h3 class="person-break">3. NGƯỜI 3 (P3) &mdash; BẢO MẬT, QOS, TỰ ĐỘNG HÓA PYTHON &amp; TỔNG HỢP BÁO CÁO</h3>
+  <div class="callout callout-tip">
+    <strong>Vai trò &amp; Mục tiêu:</strong> Đảm nhiệm toàn bộ giải pháp an ninh bảo mật (PAT/NAT Overload, Guest ACLs, L2 Security), tối ưu hóa lưu lượng thoại/video qua QoS DiffServ, lập trình tự động hóa mạng bằng Python Netmiko (IaC), và đóng vai trò Tổng biên tập Báo cáo Kỹ thuật + Kịch bản Demo.<br>
+    <strong>Rubric phụ trách:</strong> <span class="badge badge-p3">Bước 7</span> (1.0đ) • <span class="badge badge-p3">Bước 8</span> (1.0đ) • <span class="badge badge-p3">Bước 9</span> (1.0đ) • <span class="badge badge-p3">Bước 10</span> (1.0đ) • <strong>Báo cáo:</strong> Viết Chương 1, 7, 8, 9, 10 &amp; Ghép file.
+  </div>
+
+  <h4>A. Quy trình Triển khai Từng Bước &amp; Tham số Kỹ thuật</h4>
+  <ol>
+    <li><strong>Dịch vụ PAT/NAT Overload ra Internet (Bước 7):</strong>
+      <ul>
+        <li>Cấu hình PAT trên 3 Router biên (HQ, HN, ĐN): Cổng WAN <code>Gi0/0</code> đặt <code>ip nat outside</code>; các cổng/subinterfaces nội bộ đặt <code>ip nat inside</code>.</li>
+        <li>Tạo ACL <code>NAT_INSIDE</code>: Phải loại trừ traffic nội bộ liên site trước (<code>deny ip 10.0.0.0 0.255.255.255 10.0.0.0 0.255.255.255</code>) sau đó mới cho phép ra Internet (<code>permit ip 10.0.0.0 0.255.255.255 any</code>). Điều này đảm bảo gói tin đi qua Tunnel VPN không bị NAT làm hỏng IP private.</li>
+        <li>Kích hoạt NAT Overload: <code>ip nat inside source list NAT_INSIDE interface Gi0/0 overload</code>.</li>
+      </ul>
+    </li>
+    <li><strong>ACL Cô lập Mạng Khách (Guest Isolation) (Bước 7):</strong>
+      <ul>
+        <li>Tạo Extended ACL <code>GUEST_IN</code> áp dụng chiều <code>in</code> trên SVI 40 (tại DIST1/DIST2 HQ) và subinterface <code>.40</code> (tại Router HN/ĐN):
+          <ul>
+            <li><code>permit udp any any eq bootps</code> (Cho phép xin IP DHCP) • <code>permit udp any host 10.10.254.1 eq domain</code> (Cho phép hỏi DNS Server)</li>
+            <li><code>deny ip any 10.0.0.0 0.255.255.255</code> (Cấm toàn bộ truy cập nội bộ Corp) • <code>deny ip any 192.168.0.0 0.0.255.255</code> (Cấm truy cập Quản trị)</li>
+            <li><code>permit ip any any</code> (Cho phép các lưu lượng còn lại đi ra ngoài Internet)</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><strong>Bảo mật Hạ tầng Chuyển mạch Layer 2 (Bước 7):</strong>
+      <ul>
+        <li><strong>Port Security:</strong> Cấu hình trên các cổng access cắm PC của <code>HN-SW02</code> và <code>DN-SW01</code>: <code>switchport port-security maximum 2</code>, vi phạm <code>violation restrict</code>, học MAC động <code>mac-address sticky</code>.</li>
+        <li><strong>DHCP Snooping:</strong> Bật <code>ip dhcp snooping</code> trên các VLAN 10, 20, 30, 40; cấu hình cổng uplink nối về router/switch phân phối là <code>ip dhcp snooping trust</code>. Bắt buộc thêm lệnh <code>no ip dhcp snooping information option</code> (chống drop gói DHCP Relay do Option 82).</li>
+        <li><strong>Dynamic ARP Inspection (DAI):</strong> Bật <code>ip arp inspection vlan 10,20,30,40</code> và đặt <code>ip arp inspection trust</code> trên các cổng uplink. (Thứ tự: Bật DHCP Snooping &rarr; cho PC xin IP tạo bảng binding &rarr; mới bật DAI).</li>
+      </ul>
+    </li>
+    <li><strong>Chất lượng Dịch vụ (QoS DiffServ MQC) trên Router Biên (Bước 8):</strong>
+      <ul>
+        <li>Triển khai mô hình MQC 3 bước trên 3 Router biên:
+          <ol>
+            <li><strong>Class-Map:</strong> Khai báo ACL phân loại: <code>VOICE</code> match UDP 16384–32767; <code>VIDEO</code> match UDP 5004–5005.</li>
+            <li><strong>Policy-Map Ingress (Marking DSCP):</strong> Áp trên cổng nhận lưu lượng LAN: Voice gắn <code>set dscp ef</code>; Video gắn <code>set dscp af31</code>.</li>
+            <li><strong>Policy-Map Egress (Queuing WAN):</strong> Áp trên cổng WAN <code>Gi0/0</code>: Voice gán <code>priority percent 20</code> (hàng đợi ưu tiên tuyệt đối LLQ); Video gán <code>bandwidth percent 30</code> (CBWFQ); lưu lượng còn lại vào <code>class-default</code> chạy <code>fair-queue</code>.</li>
+          </ol>
+        </li>
+      </ul>
+    </li>
+    <li><strong>Lập trình Tự động hóa Mạng với Python Netmiko (Bước 9):</strong>
+      <ul>
+        <li>Cấu trúc thư mục <code>Automation/</code>: <code>inventory.yaml</code>, <code>auto_provision.py</code>, <code>requirements.txt</code>, <code>README.md</code>.</li>
+        <li><code>inventory.yaml</code>: khai báo IP quản trị VLAN 99 của 6 switch, <code>device_type: cisco_ios</code>. Dùng <code>os.environ</code> hoặc <code>getpass()</code> nhập mật khẩu an toàn.</li>
+        <li>Chức năng 1 (Backup): Tự động SSH vào từng switch, gửi <code>show running-config</code> và <code>show ip int brief</code>, lưu file backup có timestamp vào thư mục <code>backups/&lt;hostname&gt;_&lt;timestamp&gt;.cfg</code> trước và sau khi thay đổi.</li>
+        <li>Chức năng 2 (Provisioning Idempotent): Đẩy cấu hình NTP Server <code>10.10.254.1</code>, Banner MOTD. Kiểm tra <code>show vlan brief</code>, nếu VLAN đã tồn tại đúng tên thì bỏ qua, chỉ tạo VLAN còn thiếu (đảm bảo chạy lần 2 không phát sinh thay đổi).</li>
+        <li>Xử lý ngoại lệ: Khối <code>try...except (NetmikoTimeoutException, NetmikoAuthenticationException)</code> ghi log vào <code>logs/automation.log</code> và tự động chuyển sang node tiếp theo khi có thiết bị chết mà không crash script.</li>
+      </ul>
+    </li>
+    <li><strong>Điều phối Báo cáo Kỹ thuật &amp; Kịch bản Demo (Bước 10):</strong>
+      <ul>
+        <li>Tạo khung báo cáo PDF chuẩn IEEE/HCMUT (Mục lục TOC, đánh số trang, caption, tiếng Anh học thuật). Thu thập dữ liệu kiểm thử từ P1, P2 đưa vào Chương 9. Viết Chương 1, 7, 8, 9, 10. Ghép file và kiểm soát chất lượng nộp bài.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h4>B. Hướng dẫn Tự kiểm thử Độc lập (Independent Verification)</h4>
+  <div class="test-guide">
+    <strong>Cách P3 test riêng không cần chờ P1, P2:</strong><br>
+    - Test Python: Dựng 1 switch ảo bất kỳ trên EVE, nối vào Cloud1 (VLAN 99), IP <code>192.168.1.10</code>. Chạy script từ terminal laptop xác minh tạo backup, ghi log, và idempotent.<br>
+    - Test NAT &amp; ACL: Nạp thử vào 1 router test. Ping 8.8.8.8 kiểm tra <code>show ip nat translations</code>. Áp ACL Guest rồi ping thử IP dải Corp (bị cấm) và IP Internet (thành công).<br>
+    - Test QoS: Bắn traffic giả lập từ VPCS (<code>ping 10.10.254.1 -2 -p 16500</code>), gõ <code>show policy-map interface Gi0/0</code> kiểm tra counter class EF tăng.
+  </div>
+
+  <div class="deliverable-box">
+    <strong>SẢN PHẨM BÀN GIAO CỦA P3:</strong><br>
+    • Thư mục mã nguồn <code>Automation/</code> (script <code>auto_provision.py</code> chạy mượt mà, đầy đủ log).<br>
+    • Đoạn cấu hình <code>[BLOCK-3]</code> trong file <code>.cfg</code> của tất cả các thiết bị • Bảng Ma trận kiểm thử 13 test cases.<br>
+    • File Báo cáo Kỹ thuật hoàn chỉnh <code>TVI_Technical_Explanation_Report.pdf</code> (đúng trang 23 của đề).
+  </div>
+
+
+
+  <h2>PHẦN III: KẾ HOẠCH HÀNH ĐỘNG 7 NGÀY &amp; MA TRẬN KIỂM THỬ</h2>
+
+  <h3>1. Kế hoạch Phối hợp Sprint 7 Ngày (Day-by-Day Timeline)</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 8%;">Ngày</th>
+        <th style="width: 25%;">Người 1 (P1)</th>
+        <th style="width: 25%;">Người 2 (P2)</th>
+        <th style="width: 25%;">Người 3 (P3)</th>
+        <th style="width: 17%;">Mốc nghiệm thu</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Ngày 1</strong></td>
+        <td>Dựng topology trên EVE, xuất file <code>TVI_Lab.unl</code> gửi nhóm. Phác thảo sơ đồ Draw.io.</td>
+        <td>Soạn và chốt tài liệu <code>TVI_IP_Addressing_Schema.md</code> gửi nhóm dùng chung.</td>
+        <td>Cấu hình card mạng máy trạm nối VLAN 99 EVE; viết khung script Python &amp; inventory.</td>
+        <td><span class="badge badge-all">Khởi động:</span> Cả 3 máy đều mở được lab, chốt cứng IP/VLAN.</td>
+      </tr>
+      <tr>
+        <td><strong>Ngày 2</strong></td>
+        <td>Cấu hình VLAN, Trunk 802.1Q, EtherChannel LACP, Rapid-PVST+ trên các switch.</td>
+        <td>Cấu hình OSPF 3 site (trên router &amp; L3 switch); dựng eBGP với ISP; tạo GRE/IPsec.</td>
+        <td>Viết template PAT/NAT Overload và ACL Guest; test thử nghiệm trên router đơn lẻ.</td>
+        <td><span class="badge badge-p2">Mốc L3/WAN:</span> eBGP lên Established, IPsec Tunnel Up.</td>
+      </tr>
+      <tr>
+        <td><strong>Ngày 3</strong></td>
+        <td>Cấu hình SVI, HSRP v2 tại HQ, Centralized DHCP Server &amp; DNS trên Router EDGE.</td>
+        <td>Đưa Tunnel vào OSPF Area 0, cấu hình Route Summarization tại ABR, default-route.</td>
+        <td>Test script Python backup &amp; nạp cấu hình VLAN với 1 switch; viết template QoS MQC.</td>
+        <td><span class="highlight">TÍCH HỢP #1:</span> PC các site nhận DHCP từ HQ, ping thấy nhau qua Tunnel.</td>
+      </tr>
+      <tr>
+        <td><strong>Ngày 4</strong></td>
+        <td>Hoàn thiện sơ đồ Draw.io (Logical + Cabling); viết nháp Báo cáo <strong>Chương 2, 3</strong>.</td>
+        <td>Cấu hình IPv6 SLAAC &amp; OSPFv3 tại HQ; viết nháp Báo cáo <strong>Chương 4, 5, 6</strong>.</td>
+        <td>Cấu hình L2 Security (PortSec, Snooping, DAI); hoàn thiện QoS MQC; test lỗi script.</td>
+        <td><span class="badge badge-all">Mốc tính năng:</span> Đầy đủ 10 bước hoạt động trên từng phân đoạn.</td>
+      </tr>
+      <tr>
+        <td><strong>Ngày 5</strong></td>
+        <td colspan="3" style="background-color: #fefce8; padding: 3px;">
+          <strong>ĐẠI TÍCH HỢP TOÀN HỆ THỐNG (FULL INTEGRATION):</strong> Gộp toàn bộ cấu hình <code>[BLOCK-1]</code>, <code>[BLOCK-2]</code>, <code>[BLOCK-3]</code> vào bộ file <code>.cfg</code> chuẩn trên máy demo. Bật toàn bộ 10 thiết bị. Chạy trọn vẹn Ma trận kiểm thử 13 test cases. Đo thời gian phục hồi Failover (tắt link Core và tắt switch HSRP Active). Chụp bộ ảnh màn hình minh chứng chất lượng cao.
+        </td>
+        <td><span class="highlight">TÍCH HỢP #2:</span> Đạt 13/13 test case, Failover &lt; 3 phút.</td>
+      </tr>
+      <tr>
+        <td><strong>Ngày 6</strong></td>
+        <td>Đóng góp ảnh minh chứng L2/HSRP vào báo cáo; rà soát sơ đồ Draw.io.</td>
+        <td>Đóng góp ảnh minh chứng BGP/OSPF/Tunnel vào báo cáo; rà soát bảng IP.</td>
+        <td>Ráp toàn bộ các chương báo cáo thành file PDF hoàn chỉnh; tổng duyệt kịch bản demo.</td>
+        <td><span class="badge badge-p3">Bản thảo cuối:</span> Báo cáo PDF có TOC, quay clip demo dự phòng.</td>
+      </tr>
+      <tr>
+        <td><strong>Ngày 7</strong></td>
+        <td colspan="3" style="text-align: center; font-weight: 700; color: #1e3a8a; padding: 2px;">
+          Rà soát chính tả tiếng Anh, kiểm tra checklist rubric 10 điểm, nén gói ZIP chuẩn cấu trúc &rarr; NỘP BÀI!
+        </td>
+        <td><span class="badge badge-all" style="background-color:#16a34a;color:#fff;">NỘP ĐỒ ÁN</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>2. Ma trận 13 Test Cases Nghiệm thu Toàn diện (Chương 9 Báo cáo)</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 5%;">#</th>
+        <th style="width: 25%;">Hạng mục Kiểm thử</th>
+        <th style="width: 42%;">Lệnh thực thi / Thao tác</th>
+        <th style="width: 20%;">Kết quả kỳ vọng (Expected)</th>
+        <th style="width: 8%;">Bước</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>T1</strong></td>
+        <td>Cấp phát IP động DHCP</td>
+        <td>Gõ <code>ip dhcp</code> trên VPCS tại cả 3 site; <code>show ip dhcp binding</code> trên EDGE</td>
+        <td>Nhận đúng IP subnet, Gateway .1, DNS</td>
+        <td>B4</td>
+      </tr>
+      <tr>
+        <td><strong>T2</strong></td>
+        <td>Kiểm tra Spanning-Tree Root</td>
+        <td><code>show spanning-tree root</code> và <code>show spanning-tree vlan 10</code> trên CORE</td>
+        <td>CORE là Root Bridge của mọi VLAN</td>
+        <td>B3</td>
+      </tr>
+      <tr>
+        <td><strong>T3</strong></td>
+        <td>Kiểm tra EtherChannel LACP</td>
+        <td><code>show etherchannel summary</code> trên CORE, DIST1, DIST2, HN-SW01</td>
+        <td>Cờ nhóm <code>(SU)</code>, cờ port <code>(P)</code></td>
+        <td>B3</td>
+      </tr>
+      <tr>
+        <td><strong>T4</strong></td>
+        <td>Hội tụ OSPF Underlay</td>
+        <td><code>show ip ospf neighbor</code> và ping Loopback giữa các node trong site</td>
+        <td>Trạng thái <code>FULL</code>, ping thành công 100%</td>
+        <td>B5</td>
+      </tr>
+      <tr>
+        <td><strong>T5</strong></td>
+        <td>Tóm tắt Tuyến đường ABR</td>
+        <td><code>show ip route ospf</code> trên Router HQ-EDGE</td>
+        <td>Xuất hiện <code>O IA 10.20.0.0/16</code> và <code>10.30.0.0/16</code></td>
+        <td>B5</td>
+      </tr>
+      <tr>
+        <td><strong>T6</strong></td>
+        <td>Thiết lập Peering eBGP</td>
+        <td><code>show ip bgp summary</code> trên ISP-CLOUD-RTR01</td>
+        <td>3 neighbor <code>Established</code>, nhận prefix</td>
+        <td>B6</td>
+      </tr>
+      <tr>
+        <td><strong>T7</strong></td>
+        <td>Mã hóa GRE over IPsec</td>
+        <td>Ping PC-HN &harr; PC-HQ; <code>show crypto ipsec sa</code> trên EDGE</td>
+        <td>Hop qua Tunnel, gói encaps/decaps tăng</td>
+        <td>B6</td>
+      </tr>
+      <tr>
+        <td><strong>T8</strong></td>
+        <td>Truy cập Internet qua PAT</td>
+        <td>Từ PC nội bộ ping <code>8.8.8.8</code>; <code>show ip nat translations</code> trên router biên</td>
+        <td>Ping thành công, có bản ghi dịch NAT</td>
+        <td>B7</td>
+      </tr>
+      <tr>
+        <td><strong>T9</strong></td>
+        <td>Cô lập Mạng Khách (Guest)</td>
+        <td>Từ PC-GUEST ping <code>8.8.8.8</code>; ping <code>PC-EXEC</code> và ping <code>192.168.1.10</code></td>
+        <td>Ra net thành công, ping nội bộ bị Drop</td>
+        <td>B7</td>
+      </tr>
+      <tr>
+        <td><strong>T10</strong></td>
+        <td>Bảo mật Switch L2</td>
+        <td>Cắm MAC lạ trên port access (PortSec); test DHCP giả lập (Snooping/DAI)</td>
+        <td>PortSec restrict, DAI drop gói ARP giả</td>
+        <td>B7</td>
+      </tr>
+      <tr>
+        <td><strong>T11</strong></td>
+        <td>Độ ưu tiên QoS DiffServ</td>
+        <td>Gửi gói tin giả lập voice UDP 16500; <code>show policy-map interface Gi0/0</code></td>
+        <td>Counter class EF tăng trên cổng WAN</td>
+        <td>B8</td>
+      </tr>
+      <tr>
+        <td><strong>T12</strong></td>
+        <td>Tính tự động hóa Python</td>
+        <td>Chạy <code>python auto_provision.py</code> 2 lần liên tiếp + 1 lần tắt 1 switch</td>
+        <td>Lần 2 báo "no changes"; switch tắt được log</td>
+        <td>B9</td>
+      </tr>
+      <tr>
+        <td><strong>T13</strong></td>
+        <td>Phục hồi Sự cố (Failover)</td>
+        <td>Chạy <code>ping -t 8.8.8.8</code> liên tục; lần lượt tắt Port-channel 1 và tắt DIST1</td>
+        <td>Hệ thống chuyển mạch &lt; 3 giây, HSRP &lt; 10s</td>
+        <td>B10</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <h3>3. Kịch bản Trình diễn Live Demo 15 Phút (Phân vai chi tiết)</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 14%;">Khung giờ</th>
+        <th style="width: 18%;">Người trình bày</th>
+        <th style="width: 38%;">Thao tác trình diễn trên Lab thực tế</th>
+        <th style="width: 30%;">Nội dung thuyết minh trọng tâm</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Phút 01 &ndash; 03</strong></td>
+        <td><span class="badge badge-p1">Người 1</span> &amp; <span class="badge badge-p2">Người 2</span></td>
+        <td>Mở topology trực tiếp trên EVE-NG, chiếu sơ đồ Draw.io và bảng IP Schema.</td>
+        <td>Tổng quan kiến trúc 3 site, phân vùng mạng, giải pháp VLSM mở rộng 10.000+ người dùng.</td>
+      </tr>
+      <tr>
+        <td><strong>Phút 04 &ndash; 07</strong></td>
+        <td><span class="badge badge-p2">Người 2</span></td>
+        <td>Thực hiện <code>traceroute</code> từ PC Hà Nội về PC HQ; gõ <code>show crypto ipsec sa</code> trên EDGE; gõ <code>show ip route bgp</code>.</td>
+        <td>Chứng minh gói tin nội bộ được mã hóa IPsec qua Tunnel, không rò rỉ ra ISP; chứng minh Direct Internet.</td>
+      </tr>
+      <tr>
+        <td><strong>Phút 08 &ndash; 10</strong></td>
+        <td><span class="badge badge-p3">Người 3</span></td>
+        <td>Từ PC-GUEST ping <code>8.8.8.8</code> (thành công) rồi ping PC-EXEC (bị chặn); bắn traffic voice xem counter QoS tăng.</td>
+        <td>Chứng minh chính sách Zero-Trust qua ACL cô lập Guest, cơ chế NAT Overload, và cam kết QoS cho thoại VoIP.</td>
+      </tr>
+      <tr>
+        <td><strong>Phút 11 &ndash; 12</strong></td>
+        <td><span class="badge badge-p1">Người 1</span></td>
+        <td>Bật cửa sổ lệnh ping liên tục từ PC ra Internet; gõ <code>shutdown</code> trên switch <code>DIST-SW01</code> đang Active.</td>
+        <td>Chứng minh tính sẵn sàng cao (High Availability): <code>DIST-SW02</code> lập tức tiếp quản gateway, mất tối đa 1-2 gói tin.</td>
+      </tr>
+      <tr>
+        <td><strong>Phút 13 &ndash; 15</strong></td>
+        <td><span class="badge badge-p3">Người 3</span></td>
+        <td>Mở terminal chạy script <code>python auto_provision.py</code>; mở trực tiếp file backup và file <code>automation.log</code> vừa sinh ra.</td>
+        <td>Chứng minh năng lực Network Automation (IaC), tính an toàn không lộ credential, và khả năng tự hồi phục khi node lỗi.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>4. Cấu trúc Đóng gói Hồ sơ Đồ án (Submission Archive Structure)</h3>
+  <p style="font-size:7.5pt;margin:1.5px 0;">Toàn bộ sản phẩm cuối cùng được nén thành file <code>TVI_Project_GroupXX.zip</code> nộp lên cổng môn học theo đúng trang 23 đề bài:</p>
+  <pre style="font-size:7pt;padding:3.5px 5px;margin:2px 0 3px 0;">TVI_Project_GroupXX/
+├── README.md                                  &lt;-- Hướng dẫn cài đặt lab, nạp config, chạy script
+├── Report/
+│   └── TVI_Technical_Explanation_Report.pdf   &lt;-- Báo cáo kỹ thuật IEEE/Harvard đầy đủ Mục lục
+├── Design/
+│   ├── TVI_Logical_Topology.drawio / .png     &lt;-- Sơ đồ logic chi tiết đầy đủ phân vùng
+│   ├── TVI_Physical_Topology.png              &lt;-- Sơ đồ đấu nối dây vật lý (Cabling diagram)
+│   └── TVI_IP_Addressing_Schema.md           &lt;-- Bảng cấp phát IP chi tiết VLSM &amp; IPv6
+├── Configurations/
+│   ├── HQ_Startup_Configs/                    &lt;-- HCMC-EDGE-RTR01, CORE, DIST1, DIST2, ISP-CLOUD
+│   ├── Hanoi_Startup_Configs/                 &lt;-- HANOI-RND-RTR01, HANOI-RND-SW01, HANOI-RND-SW02
+│   └── DaNang_Startup_Configs/                &lt;-- DANANG-LOG-RTR01, DANANG-LOG-SW01
+└── Automation/
+    ├── inventory.yaml                         &lt;-- File khai báo node quản trị VLAN 99
+    ├── auto_provision.py                      &lt;-- Mã nguồn Python Netmiko tự động hóa
+    ├── requirements.txt                       &lt;-- Thư viện phụ thuộc (netmiko, pyyaml)
+    ├── backups/                               &lt;-- Thư mục chứa các file cấu hình sao lưu
+    └── logs/                                  &lt;-- Thư mục chứa log thực thi automation.log</pre>
+
+  <h3>5. Chiến lược Xử lý Rủi ro Khi Trễ Tiến Độ (Contingency Priority)</h3>
+  <div class="callout callout-warn" style="font-size:7.5pt;padding:3px 6px;margin:2px 0;">
+    <strong>ƯU TIÊN CẮT GIẢM NẾU THIẾU THỜI GIAN:</strong> Luôn giữ đủ 10 bước ở mức <i>"chạy được + chụp đủ ảnh minh chứng"</i>.<br>
+    Nếu quá gấp rút, chỉ được cắt giảm theo thứ tự an toàn: (1) Cấu hình OSPFv3/IPv6 trên switch (vẫn giữ bảng IPv6 trong schema Báo cáo); (2) Tính năng Port Security trên switch HQ; (3) Các bản ghi DNS tĩnh phụ.<br>
+    <strong>TUYỆT ĐỐI KHÔNG CẮT:</strong> HSRP Gateway, DHCP Relay, Tunnel IPsec VPN, NAT/ACL Guest, QoS counter, Python script, và Failover test (vì đây là các cột điểm trọng yếu của Rubric).
+  </div>
+
+  <div class="callout callout-success" style="font-size:7.6pt;padding:3px 6px;margin-top:3px;">
+    <strong>LỜI KẾT:</strong> Với tài liệu phân công 3 người này, cả nhóm đã có đủ công cụ và sự độc lập để tăng tốc hoàn thành xuất sắc đồ án trong 1 tuần. Hãy bám sát mốc nghiệm thu từng ngày và chúc nhóm đạt điểm số tuyệt đối 10/10!
+  </div>
+
+</body>
+</html>

@@ -33,6 +33,10 @@ Automation/logs/*.log
 *.vmx
 *.vmxf
 
+# Explicitly allow project Cisco vIOS lab images (< 60MB each)
+!EVE_Lab/images/*.qcow2
+!EVE_Lab/images/*.tgz
+
 # Lab exports temporary / large dumps
 *.pcap
 *.pcapng
