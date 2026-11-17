@@ -41,7 +41,11 @@ class FakeSwitch:
 
     def send_command(self, command, **kwargs):
         if command == "show running-config":
-            return "hostname TEST-SW\n" + "\n".join(self.baseline)
+            return (
+                "hostname TEST-SW\n"
+                "username test-user privilege 15 secret 9 TEST_ONLY_HASH\n"
+                + "\n".join(self.baseline)
+            )
         if command == "show startup-config":
             return self.startup
         if command == "show ip interface brief":
@@ -132,12 +136,41 @@ class ProvisioningTests(unittest.TestCase):
         for delimiter in ("#", "^C", "\x03"):
             with self.subTest(delimiter=repr(delimiter)):
                 config = (
-                    "ntp server 10.10.254.1 prefer\n"
-                    f"banner motd {delimiter}\n {automation.BANNER_TEXT} \n{delimiter}\n"
-                    "logging buffered 64000 6\n"
+                    "\n".join(automation.AAA_CONFIGS + automation.VTY_CONFIGS)
+                    + "\nntp server 10.10.254.1 prefer\n"
+                    + f"banner motd {delimiter}\n {automation.BANNER_TEXT} \n{delimiter}\n"
+                    + "logging buffered 64000 6\n"
                 )
                 self.assertEqual(automation.get_missing_baseline(config), [])
         self.assertEqual(automation.get_missing_baseline(""), automation.BASELINE_CONFIGS)
+
+    def test_baseline_requires_aaa_and_all_vty_lines(self):
+        system_config = "\n".join(automation.SYSTEM_CONFIGS)
+        self.assertEqual(
+            automation.get_missing_baseline(system_config),
+            automation.AAA_CONFIGS + automation.VTY_CONFIGS,
+        )
+        complete = "\n".join(automation.BASELINE_CONFIGS)
+        self.assertEqual(automation.get_missing_baseline(complete), [])
+        partial = complete.replace("line vty 0 15", "line vty 0 4")
+        self.assertEqual(automation.get_missing_baseline(partial), automation.VTY_CONFIGS)
+
+    def test_split_vty_blocks_and_default_indentation_are_supported(self):
+        global_config = "\n".join(automation.AAA_CONFIGS + automation.SYSTEM_CONFIGS)
+        options = "\n".join(f" {option}" for option in automation.VTY_OPTIONS)
+        config = global_config + f"\nline vty 0 4\n{options}\n!\nline vty 5 15\n{options}\n!\n"
+        self.assertEqual(automation.get_missing_baseline(config), [])
+        wrong = config.replace(
+            "\n authorization exec TVI_LOCAL", "\n authorization exec OTHER", 1
+        )
+        self.assertEqual(automation.get_missing_baseline(wrong), automation.VTY_CONFIGS)
+
+    def test_aaa_change_requires_existing_local_account_before_writes(self):
+        with self.assertLogs(automation.logger, level="ERROR"):
+            result = automation.provision_device(self.device, "external-only", "unused")
+        self.assertFalse(result)
+        self.assertEqual(self.switch.config_batches, [])
+        self.assertEqual(self.switch.save_count, 0)
 
     def test_dry_run_only_reads_and_creates_backups(self):
         self.assertTrue(self.provision(dry_run=True))
@@ -303,7 +336,13 @@ class SecurityConfigTests(unittest.TestCase):
         self.assertEqual(len(matches), 1)
         return matches[0].read_text(encoding="utf-8").split("! [P4]", 1)[1]
 
-    def test_nat_exempts_internal_destinations_and_permits_local_internet(self):
+    def test_switch_configs_include_complete_automation_baseline(self):
+        for device in automation.load_inventory():
+            with self.subTest(hostname=device["hostname"]):
+                config = self.config(f"{device['hostname']}.cfg")
+                self.assertEqual(automation.get_missing_baseline(config), [])
+
+    def test_nat_exempts_internal_destinations_and_permits_enterprise_internet(self):
         for hostname, site in (("HCMC-EDGE", "10.10"), ("HANOI-RND", "10.20"), ("DANANG-LOG", "10.30")):
             with self.subTest(hostname=hostname):
                 config = self.config(f"{hostname}-RTR01.cfg")
@@ -324,6 +363,7 @@ class SecurityConfigTests(unittest.TestCase):
                     return False
 
                 self.assertTrue(permits(f"{site}.4.10", "8.8.8.8"))
+                self.assertTrue(permits("10.99.4.10", "8.8.8.8"))
                 self.assertFalse(permits(f"{site}.4.10", "10.20.0.10"))
                 self.assertFalse(permits(f"{site}.4.10", "192.168.2.10"))
                 self.assertFalse(permits("192.168.1.10", "8.8.8.8"))

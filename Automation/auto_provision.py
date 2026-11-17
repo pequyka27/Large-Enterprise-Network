@@ -27,11 +27,23 @@ log_file = LOG_DIR / "automation.log"
 logger = logging.getLogger("TVI_Automation")
 
 BANNER_TEXT = "Unauthorized access to TVI Corporate Infrastructure is prohibited."
-BASELINE_CONFIGS = [
+AAA_CONFIGS = [
+    "aaa new-model",
+    "aaa authentication login TVI_LOCAL local",
+    "aaa authorization exec TVI_LOCAL local",
+]
+VTY_OPTIONS = (
+    "login authentication TVI_LOCAL",
+    "authorization exec TVI_LOCAL",
+    "transport input ssh",
+)
+VTY_CONFIGS = ["line vty 0 15"] + [f" {option}" for option in VTY_OPTIONS] + ["exit"]
+SYSTEM_CONFIGS = [
     "ntp server 10.10.254.1",
     f"banner motd #{BANNER_TEXT}#",
     "logging buffered 64000 informational",
 ]
+BASELINE_CONFIGS = AAA_CONFIGS + SYSTEM_CONFIGS + VTY_CONFIGS
 TARGET_VLANS = {
     "10": "EXEC_FINANCE",
     "20": "RND_ENGINEERING",
@@ -186,11 +198,11 @@ def get_missing_vlans(net_connect):
 def get_missing_baseline(running_config):
     """Compare IOS running-config, including rendered banner delimiters."""
     lines = [line.strip() for line in running_config.splitlines()]
-    commands = []
+    commands = [command for command in AAA_CONFIGS if command not in lines]
     if not any(
         re.match(r"ntp server\s+10\.10\.254\.1(?:\s|$)", line) for line in lines
     ):
-        commands.append(BASELINE_CONFIGS[0])
+        commands.append(SYSTEM_CONFIGS[0])
 
     banner_text = None
     banner = re.search(r"(?m)^banner motd (\^.|[^\r\n])", running_config)
@@ -199,12 +211,29 @@ def get_missing_baseline(running_config):
         if end >= 0:
             banner_text = running_config[banner.end():end].strip()
     if banner_text != BANNER_TEXT:
-        commands.append(BASELINE_CONFIGS[1])
+        commands.append(SYSTEM_CONFIGS[1])
     if not any(
         re.fullmatch(r"logging buffered\s+64000\s+(?:informational|6)", line)
         for line in lines
     ):
-        commands.append(BASELINE_CONFIGS[2])
+        commands.append(SYSTEM_CONFIGS[2])
+
+    vty_options = {}
+    normalized_config = "\n".join(running_config.splitlines())
+    for block in re.finditer(
+        r"(?m)^line vty (\d+)(?: (\d+))?\n((?:[ \t]+[^\n]*(?:\n|$))*)",
+        normalized_config,
+    ):
+        first = int(block.group(1))
+        last = int(block.group(2) or block.group(1))
+        options = {line.strip() for line in block.group(3).splitlines()}
+        for line_number in range(first, last + 1):
+            vty_options[line_number] = options
+    if any(
+        not set(VTY_OPTIONS).issubset(vty_options.get(line_number, set()))
+        for line_number in range(16)
+    ):
+        commands.extend(VTY_CONFIGS)
     return commands
 
 
@@ -257,6 +286,17 @@ def provision_device(device_info, username, password, dry_run=False):
             backup_device(net_connect, hostname, "before", running_config)
             try:
                 commands = get_missing_vlans(net_connect) + get_missing_baseline(running_config)
+                changes_aaa = any(
+                    command in AAA_CONFIGS or command.strip() in VTY_OPTIONS
+                    for command in commands
+                )
+                if changes_aaa and not re.search(
+                    rf"(?m)^username {re.escape(username)}(?:\s|$)", running_config
+                ):
+                    raise RuntimeError(
+                        "Local AAA requires the SSH username to exist in the device's "
+                        "local user database. Confirm the local account before applying AAA."
+                    )
                 if dry_run:
                     logger.info("[%s] DRY RUN planned commands: %s", hostname, commands)
                 elif commands:

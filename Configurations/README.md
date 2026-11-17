@@ -54,7 +54,9 @@ Mỗi file cấu hình được phân tách rõ ràng thành 4 khối tương �
 
 ## 3. Áp dụng cấu hình bảo mật P4
 
-Các file `.cfg` biểu diễn trạng thái startup hoàn chỉnh. Khi cập nhật thiết bị đang có standard ACL `NAT_INSIDE`, chuyển ACL sang extended trong cửa sổ triển khai phù hợp và kiểm tra các phiên NAT đang hoạt động trước khi thay đổi. Các khối P4 hiện dùng extended ACL để loại trừ mạng nội bộ và chỉ PAT nguồn của site tương ứng.
+Các file `.cfg` biểu diễn trạng thái startup hoàn chỉnh. Khi cập nhật thiết bị đang có standard ACL `NAT_INSIDE`, chuyển ACL sang extended trong cửa sổ triển khai phù hợp và kiểm tra các phiên NAT đang hoạt động trước khi thay đổi. Các khối P4 dùng extended ACL để miễn NAT cho lưu lượng nội bộ/quản trị, sau đó PAT nguồn `10.0.0.0/8` đi các đích còn lại theo phân công nhóm.
+
+AAA dùng method list local `TVI_LOCAL` cho đăng nhập SSH và phân quyền EXEC trên VTY 0–15. Dùng tài khoản local đang có trên thiết bị, kiểm tra đăng nhập và quyền enable qua một phiên SSH mới trước khi lưu cấu hình trong lượt triển khai. Các lệnh lưu cấu hình trên router/switch là `end` rồi `write memory`.
 
 Trên HANOI-RND-SW02 và DANANG-LOG-SW01, triển khai DHCP Snooping cùng trust uplink trước, cho VPCS xin DHCP và kiểm tra `show ip dhcp snooping binding`, sau đó bật `ip arp inspection vlan 10,20,30,40`. Sau khi switch khởi động lại, cho các máy trạm gia hạn DHCP để tạo lại binding. Máy dùng IP tĩnh cần binding/ARP ACL phù hợp trước khi bật DAI trên cổng đó.
 
