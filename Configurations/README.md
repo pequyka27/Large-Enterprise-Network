@@ -51,3 +51,11 @@ Mỗi file cấu hình được phân tách rõ ràng thành 4 khối tương �
 **LƯU Ý:**
 - Thành viên phụ trách phần nào chỉ chỉnh sửa bên trong khối `[Px]` của mình.
 - Không tự ý sửa đổi tên thiết bị, tên interface, hoặc địa chỉ IP cố định đã được thống nhất tại [TVI_IP_Addressing_Schema.md](../Design/TVI_IP_Addressing_Schema.md).
+
+## 3. Áp dụng cấu hình bảo mật P4
+
+Các file `.cfg` biểu diễn trạng thái startup hoàn chỉnh. Khi cập nhật thiết bị đang có standard ACL `NAT_INSIDE`, chuyển ACL sang extended trong cửa sổ triển khai phù hợp và kiểm tra các phiên NAT đang hoạt động trước khi thay đổi. Các khối P4 hiện dùng extended ACL để loại trừ mạng nội bộ và chỉ PAT nguồn của site tương ứng.
+
+Trên HANOI-RND-SW02 và DANANG-LOG-SW01, triển khai DHCP Snooping cùng trust uplink trước, cho VPCS xin DHCP và kiểm tra `show ip dhcp snooping binding`, sau đó bật `ip arp inspection vlan 10,20,30,40`. Sau khi switch khởi động lại, cho các máy trạm gia hạn DHCP để tạo lại binding. Máy dùng IP tĩnh cần binding/ARP ACL phù hợp trước khi bật DAI trên cổng đó.
+
+ACL `GUEST_IN` cho phép DHCP và DNS UDP/TCP tới `10.10.254.1`, chặn mạng nội bộ và quản trị rồi cho phép Internet. ACL `GUEST_V6_IN` bảo vệ mạng nội bộ IPv6, đồng thời cho phép Neighbor Discovery và DHCPv6. Kiểm tra bằng lưu lượng từ máy trạm Guest qua đúng gateway khi triển khai trên EVE.
