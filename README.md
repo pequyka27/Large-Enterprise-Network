@@ -97,11 +97,30 @@ Chạy script kiểm tra và cấu hình tự động:
 ```powershell
 python Automation\auto_provision.py
 ```
-*Tài khoản mặc định: `admin` / `Cisco123!`.*
-Script sẽ:
-1. Kết nối an toàn qua SSH tới tất cả 6 switch.
-2. Tự động backup `show running-config` và `show ip interface brief` kèm timestamp vào `Automation/backups/`.
-3. Tự động kiểm tra VLAN hiện có (Idempotent: chỉ thêm VLAN còn thiếu).
-4. Đẩy cấu hình mẫu (NTP, Banner MOTD, Logging buffer).
-5. Lưu cấu hình vào NVRAM (`write memory`).
-6. Báo cáo tổng kết và ghi log đầy đủ tại `Automation/logs/automation.log`.
+Thông tin đăng nhập được nhập qua terminal hoặc biến môi trường `TVI_USER`, `TVI_PASS`. Dùng `TVI_SECRET` nếu mật khẩu enable khác mật khẩu SSH.
+
+Kiểm tra inventory offline trước khi kết nối EVE
+
+```powershell
+python Automation\auto_provision.py --check-inventory
+```
+
+Xem trước kế hoạch cho một switch đang truy cập được qua Tailscale
+
+```powershell
+python Automation\auto_provision.py --device HCMC-CORE-SW01 --dry-run
+```
+
+Chế độ `--dry-run` đọc trạng thái và tạo backup. Khi áp dụng, bỏ `--dry-run`. Có thể lặp `--device` để chọn nhiều switch hoặc dùng `--inventory <duong-dan.yaml>` để chọn inventory riêng. Inventory dùng IP và cổng SSH thực tế do leader cung cấp. Truy cập Web EVE và SSH tới switch cần được kiểm tra riêng.
+
+Script backup trước/sau vào `Automation/backups/`, đối chiếu đủ VLAN 10/20/30/40/99/100/999 và baseline AAA/NTP/banner/logging. AAA dùng method list `TVI_LOCAL` để xác thực tài khoản local và phân quyền EXEC trên VTY 0–15 qua SSH. Trước khi đổi AAA, script kiểm tra username đang dùng đã có trong cấu hình tài khoản local của thiết bị. Khi có thay đổi, script kiểm tra lại trạng thái rồi lưu NVRAM. Lần chạy tiếp theo bỏ qua cấu hình đã đúng. Lỗi một thiết bị được ghi vào `Automation/logs/automation.log` và các thiết bị còn lại tiếp tục chạy. Lỗi giữa quá trình cấu hình được lưu thêm backup `failed` nếu kết nối còn hoạt động.
+
+Syslog hiện được lưu trong bộ đệm cục bộ bằng `logging buffered 64000 informational`. Nếu nhóm triển khai collector tập trung, leader cần cung cấp địa chỉ và dịch vụ nhận log để cấu hình gửi Syslog tới collector đó khi triển khai.
+
+Mã thoát `0` biểu thị thành công, `1` biểu thị lỗi inventory/thông tin đăng nhập, `2` biểu thị có thiết bị thất bại và `130` biểu thị người dùng ngắt chạy.
+
+Chạy kiểm thử offline bằng venv đã cài requirements
+
+```powershell
+python -m unittest discover -s Automation -p "test_*.py" -v
+```
