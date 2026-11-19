@@ -69,10 +69,10 @@ Trong đó:
 
 | Vị trí / VLAN | Subnet IPv6 Prefix | Default Gateway IP | Ghi chú |
 |---|---|---|---|
-| HQ VLAN 10 (Finance) | `2001:db8:7a1:110::/64` | `2001:db8:7a1:110::1` | SLAAC / HSRPv2 |
-| HQ VLAN 20 (R&D) | `2001:db8:7a1:120::/64` | `2001:db8:7a1:120::1` | SLAAC / HSRPv2 |
-| HQ VLAN 30 (Logistics)| `2001:db8:7a1:130::/64` | `2001:db8:7a1:130::1` | SLAAC / HSRPv2 |
-| HQ VLAN 40 (Guest) | `2001:db8:7a1:140::/64` | `2001:db8:7a1:140::1` | SLAAC / HSRPv2 |
-| HQ Transit (VLAN 100)| `2001:db8:7a1:1ff::/64` | EDGE: `::1`, DIST1: `::2`, DIST2: `::3` | OSPFv3 Area 0 |
-| Hanoi VLAN 20 (R&D) | `2001:db8:7a1:220::/64` | `2001:db8:7a1:220::1` | SLAAC (Gi0/1.20) |
-| Da Nang VLAN 30 (Ops) | `2001:db8:7a1:330::/64` | `2001:db8:7a1:330::1` | SLAAC (Gi0/1.30) |
+| HQ VLAN 10 (Finance) | `2001:db8:7a1:110::/64` | `::2` / `::3` (HSRPv2 Grp 110 VIP: `FE80::5:73FF:FEA0:6E`) | SLAAC + Dual-Stack HSRPv2 |
+| HQ VLAN 20 (R&D) | `2001:db8:7a1:120::/64` | `::2` / `::3` (HSRPv2 Grp 120 VIP: `FE80::5:73FF:FEA0:78`) | SLAAC + Dual-Stack HSRPv2 |
+| HQ VLAN 30 (Logistics)| `2001:db8:7a1:130::/64` | `::2` / `::3` (HSRPv2 Grp 130 VIP: `FE80::5:73FF:FEA0:82`) | SLAAC + Dual-Stack HSRPv2 |
+| HQ VLAN 40 (Guest) | `2001:db8:7a1:140::/64` | `::2` / `::3` (HSRPv2 Grp 140 VIP: `FE80::5:73FF:FEA0:8C`) | SLAAC + HSRPv2 + `GUEST_V6_IN` |
+| HQ Transit (VLAN 100)| `2001:db8:7a1:1ff::/64` | EDGE: `::1`, DIST1: `::2`, DIST2: `::3` | OSPFv3 Area 0 (Edge) + Static/Floating Backup (DIST) |
+| Hanoi VLAN 20 (R&D) | `2001:db8:7a1:220::/64` | `2001:db8:7a1:220::1` | SLAAC + OSPFv3 Area 1 (Gi0/1.20) |
+| Da Nang VLAN 30 (Ops) | `2001:db8:7a1:330::/64` | `2001:db8:7a1:330::1` | SLAAC + OSPFv3 Area 2 (Gi0/1.30) |
